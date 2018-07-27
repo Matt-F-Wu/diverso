@@ -1,0 +1,74 @@
+.bubbleRow {
+  display: flex;
+  flex-direction: row;
+  /*align-items: center;*/
+  padding: 8px;
+}
+
+.bubbleColumn {
+  display: flex;
+  max-width: 65%;
+  flex-direction: column;
+  padding-top: 32px;
+}
+
+.userBubbleRow {
+  justify-content: flex-end;
+}
+
+.programBubbleRow {
+  justify-content: flex-start;
+}
+
+.bubbleBase {
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 8px;
+  animation: appear 1 1s ease-in-out;
+  text-align: start;
+}
+
+.userBubble {
+  background-color: #2C3E99;
+  color: white;
+}
+
+.programBubble {
+  background-color: #32C7BE;
+}
+
+/* Display the user's choices*/
+.choiceBubble {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-color: transparent;
+  text-align: center;
+}
+
+.avatarContainer {
+  width: 10%;
+  max-width: 100px;
+  margin-right: 2%;
+}
+
+.jsx_container {
+  width: 100%;
+}
+
+.avatar {
+  width: 100%;
+  height: auto;
+}
+
+.choiceButtonWithMargin {
+  flex: 1 0 auto;
+  width: calc(50% - 56px);
+  max-width: calc(50% - 56px);
+  margin: 8px;
+}
+
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

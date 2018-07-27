@@ -1,0 +1,10 @@
+/* Use Google's Noto Sans font */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+.App {
+  text-align: center;
+}

@@ -1,0 +1,26 @@
+@import "../../media/theme.css";
+
+.container {
+	height: 100px;
+	display: flex;
+  flex: 1;
+	flex-direction: row;
+	justify-content: space-between;
+  align-items: center;
+	border-bottom: 2px solid;
+	border-image: linear-gradient(to right, #e66465, #9198e5) 1;
+	margin-bottom: 8px;
+  padding: 0px 32px 0px 32px;
+}
+
+.logo {
+  height: calc(100% - 16px);
+}
+
+.activeLink {
+  border-bottom: 3px solid var(--color-program);
+}
+
+.inactiveLink {
+  border-bottom: 3px solid transparent;
+}

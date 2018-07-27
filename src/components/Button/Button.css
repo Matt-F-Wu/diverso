@@ -1,0 +1,43 @@
+@import "../../media/theme.css";
+
+.base {
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  padding: 16px;
+  cursor: default;
+}
+
+.innerContainer {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonGreen {
+  background-color: var(--color-program);
+  color: white;
+}
+
+.buttonRed {
+  background-color: white;
+  border: 2px solid var(--color-choice);
+  color: var(--color-choice);
+}
+
+.buttonRed:hover {
+  background-color: var(--color-choice);
+  color: white;
+}
+
+.buttonGreyText {
+  color: var(--color-grey);
+  font-weight: bold;
+}
+
+.buttonRedText {
+  color: var(--color-choice);
+  font-weight: bold;
+}

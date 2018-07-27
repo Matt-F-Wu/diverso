@@ -1,0 +1,43 @@
+.MessageFormContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  width: 560px;
+  color: #1e1e1e;
+  font-size: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.formSection {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
+label>input, textarea {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.actionBubble {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding-top: 4px;
+  margin-bottom: 8px;
+}
+
+.actionBubble>label {
+  border-bottom: 0px;
+}
+
+.statusMessage {
+  color: green;
+}

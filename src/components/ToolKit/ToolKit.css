@@ -1,0 +1,11 @@
+.ToolKitContainer {
+  padding: 16px;
+  display: flex;
+  max-width: 640px;
+  flex-direction: column;
+  background-color: #f1f1f1;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: auto;
+  margin-right: auto;
+}
