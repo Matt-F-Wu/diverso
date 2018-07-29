@@ -1,3 +1,14 @@
 .conversationContainer {
   padding: 8px 10% 8px 10%;
 }
+
+.floatingButton {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  bottom: 40px;
+  right: 40px;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 6px 12px #999;
+}

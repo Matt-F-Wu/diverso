@@ -19,7 +19,7 @@ export default class ChatBubble extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.bookMarks.length !== this.props.bookMarks.length){
       this.state.bookMarkingType = this.calculateBorderStyle(nextProps.bookMarks);
-      console.log("updating...", this.state.bookMarkingType, nextProps.bookMarks);
+      this.state.bookMarked = nextProps.bookMarks.includes(nextProps.index);
     }
     return true;
   }
@@ -43,15 +43,15 @@ export default class ChatBubble extends Component {
 
   onClickBookmark = () => {
     if (this.state.bookMarked){
-      this.setState({
-        bookMarked: !this.state.bookMarked,
-      });
+      // this.setState({
+      //   bookMarked: !this.state.bookMarked,
+      // });
       this.props.bookMarking(this.props.index, true);
       return;  
     }
     
     const { bookMarks } = this.props;
-    this.styleChange(this.calculateBorderStyle(bookMarks));
+    // this.styleChange(this.calculateBorderStyle(bookMarks));
     // fire callback in the end
     this.props.bookMarking(this.props.index);
   }

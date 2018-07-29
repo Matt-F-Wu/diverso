@@ -7,6 +7,7 @@ import {
 import { connect } from 'react-redux';
 import ChatBubble from '../ChatBubble';
 import { fetchConversationHistory, fetchMessage } from '../../api/communication';
+import bm_icon from '../../media/bookmark.svg';
 import './Conversation.css';
 
 const TYPE_MESSAGE = 'message';
@@ -98,6 +99,14 @@ class Conversation extends Component {
     });
   }
 
+  submitBookmarks = () => {
+    // empty bookmarks
+    this.setState({
+      bookMarks: [],
+    });
+
+  }
+
   render() {
     const { conversation } = this.props;
     return (
@@ -118,6 +127,9 @@ class Conversation extends Component {
         }
         <div></div>
       </div>
+      { this.state.bookMarks.length > 0 &&
+        <img src={ bm_icon } width="100" height="100" className="floatingButton" onClick={ this.submitBookmarks }/>
+      }
       <div ref={el => { this.el = el; }}></div>
       </div>
     );
