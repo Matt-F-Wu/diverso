@@ -6,6 +6,7 @@
   border-radius: 4px;
   padding: 16px;
   cursor: default;
+  cursor: pointer;
 }
 
 .innerContainer {

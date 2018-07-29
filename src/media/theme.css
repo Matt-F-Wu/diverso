@@ -47,3 +47,27 @@
   margin-left: 24px;
   margin-right: 24px;
 }
+
+.hoverableSvg {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-grey);
+  cursor: pointer;
+}
+
+.hoverableSvg svg:hover path {
+  fill: var(--color-accent);
+}
+
+.iconClicked {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.iconClicked svg path {
+  fill: white;
+}

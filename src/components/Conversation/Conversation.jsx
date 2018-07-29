@@ -7,7 +7,7 @@ import {
 import { connect } from 'react-redux';
 import ChatBubble from '../ChatBubble';
 import { fetchConversationHistory, fetchMessage } from '../../api/communication';
-import bm_icon from '../../media/bookmark.svg';
+import done_icon from '../../media/done.svg';
 import './Conversation.css';
 
 const TYPE_MESSAGE = 'message';
@@ -32,6 +32,16 @@ class Conversation extends Component {
 
   onActionClick = (action, message) => {
     const { addToConversation, handleUserSelection } = this.props;
+    const { history } = this.props.conversation;
+    if (history[history.length - 1] !== message) {
+      if (action.name === message.selection) {
+        // This action has already been taken, do nothing
+        return;
+      } else {
+        // replay this message at the bottom and take new action
+        addToConversation([message]);
+      }
+    }
 
     if (action.type === TYPE_MESSAGE_INPUT) {
       const input = document.getElementById(message.key + '_textarea').value;
@@ -128,7 +138,7 @@ class Conversation extends Component {
         <div></div>
       </div>
       { this.state.bookMarks.length > 0 &&
-        <img src={ bm_icon } width="100" height="100" className="floatingButton" onClick={ this.submitBookmarks }/>
+        <img src={ done_icon } width="100" height="100" className="floatingButton" onClick={ this.submitBookmarks }/>
       }
       <div ref={el => { this.el = el; }}></div>
       </div>

@@ -5,13 +5,10 @@
   flex-direction: row;
   /*align-items: center;*/
   padding: 8px;
-  box-sizing: border-box;
 }
 
 .bubbleColumn {
-  display: flex;
   max-width: 65%;
-  flex-direction: column;
   padding-top: 32px;
 }
 
@@ -65,7 +62,7 @@
 }
 
 .noBookmark {
-  /**/
+  border: 8px solid transparent;
 }
 
 .topBookmark {
@@ -95,6 +92,22 @@
   width: calc(50% - 56px);
   max-width: calc(50% - 56px);
   margin: 8px;
+}
+
+.floatingMenu {
+  width: 60px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 32px;
+  animation: slideInFromLeft 0.4s ease-in-out;
+}
+
+@keyframes slideInFromLeft {
+  from { transform: translateX(-30px);  }
+  to { transform: translateX(0px); }
 }
 
 @keyframes appear {

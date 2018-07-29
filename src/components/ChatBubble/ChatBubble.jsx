@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import './ChatBubble.css';
 import Button from '../Button';
 import bird_circle from '../../media/bird_circle.svg';
+import BMIcon from '../../media/bookmark';
 
 export default class ChatBubble extends Component {
   state={
+    showMenu: false,
     bookMarked: false,
     bookMarkingType: {isTop: false, isBottom: false},
   }
@@ -70,11 +72,11 @@ export default class ChatBubble extends Component {
       borderStyle += 'noBookmark';
     }
     
-    console.log(borderStyle);
+    // console.log(borderStyle);
     const bubbleClassName = message.speaker === 'user'? 'userBubble' : 'programBubble';
     const bubbleRowClassName = message.speaker === 'user'? 'userBubbleRow' : 'programBubbleRow';
 		return (
-      <div className={ `jsx_container ${ borderStyle }` }>
+    <div className={ `jsx_container ${ borderStyle }` }>
       <div ref={ hostRef } className={ `bubbleRow ${ bubbleRowClassName }` }>
         { message.speaker === 'program' && (
             <div
@@ -85,36 +87,46 @@ export default class ChatBubble extends Component {
             </div>
           )
         }
-        <div className="bubbleColumn">
-          {
-            message.body.map((ele) => 
-              ele.type === 'text'
-              ? <div
-                  className={ `bubbleBase ${ bubbleClassName }` }>
-                  { ele.value }
-                </div>
-              : <div className="jsx_container" dangerouslySetInnerHTML={{ __html: ele.value}}></div>
-            )
-          }
-          {/*Display user's choices here*/}
-          {
-          message.actions && message.actions.length > 0 && (
-          <div className={ 'bubbleBase choiceBubble' }>
+        <div className="flexRow bubbleColumn"
+          onMouseOver={() => {this.setState({showMenu: true})}}
+          onMouseLeave={() => {this.setState({showMenu: false})}}
+        >
+          <div className="flexColumn" style={{width: 'calc(100% - 60px)', minWidth: 'calc(100% - 60px)'}}>
             {
-              message.actions.map((a, i) => 
-                <Button key={ i }
-                  label={ a.name }
-                  type="buttonRed"
-                  className="choiceButtonWithMargin"
-                  onClick={ () => onActionClick(a, message) }
-                />
+              message.body.map((ele) => 
+                ele.type === 'text'
+                ? <div
+                    className={ `bubbleBase ${ bubbleClassName }` }>
+                    { ele.value }
+                  </div>
+                : <div className="jsx_container" dangerouslySetInnerHTML={{ __html: ele.value}}></div>
               )
             }
+            {/*Display user's choices here*/}
+            {
+            message.actions && message.actions.length > 0 && (
+            <div className={ 'bubbleBase choiceBubble' }>
+              {
+                message.actions.map((a, i) => 
+                  <Button key={ i }
+                    label={ a.name }
+                    type="buttonRed"
+                    className="choiceButtonWithMargin"
+                    onClick={ () => onActionClick(a, message) }
+                  />
+                )
+              }
+            </div>
+            )
+            }
           </div>
-          )
+          {
+            this.state.showMenu &&
+            <div className="floatingMenu">
+                <BMIcon onClick={ this.onClickBookmark } marked={ this.state.bookMarked }/>
+            </div>
           }
         </div>
-        
         { this.props.children }
       </div>
       {
@@ -127,7 +139,7 @@ export default class ChatBubble extends Component {
           </div>
         )
       }
-      </div>
+    </div>
     );
 	}
 }

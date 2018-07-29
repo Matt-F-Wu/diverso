@@ -1,14 +1,30 @@
+@import "../../media/theme.css";
+
 .conversationContainer {
   padding: 8px 10% 8px 10%;
 }
 
 .floatingButton {
   position: fixed;
-  width: 100px;
-  height: 100px;
+  cursor: pointer;
+  width: 80px;
+  height: 80px;
   bottom: 40px;
   right: 40px;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: var(--color-program);
   border-radius: 50px;
   text-align: center;
-  box-shadow: 2px 6px 12px #999;
+  /*box-shadow: 2px 6px 12px #999;*/
+  animation: Drop 0.6s ease-in;
+}
+
+@keyframes Drop {
+  from { transform: translateY(-60px); }
+  65% { transform: translateY(0px); }
+  80% { transform: translateY(-10px); }
+  90% { transform: translateY(0px); }
+  95% { transform: translateY(5px); }
+  to { transform: translateY(0px); }
 }
