@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { toogleIsFetching, setConversation, updateConversation } from './actions';
+import {
+  toogleIsFetching,
+  setConversation,
+  updateConversation,
+  updateLastMessage } from './actions';
 import { connect } from 'react-redux';
 import ChatBubble from '../ChatBubble';
 import { fetchConversationHistory, fetchMessage } from '../../api/communication';
@@ -9,6 +13,10 @@ const TYPE_MESSAGE = 'message';
 const TYPE_MESSAGE_INPUT = 'message_input';
 
 class Conversation extends Component {
+  state = {
+    bookMarks: [],
+  }
+
   componentDidMount() {
     this.scrollToBottom();
   }
@@ -22,15 +30,15 @@ class Conversation extends Component {
   }
 
   onActionClick = (action, message) => {
-    const { addToConversation } = this.props;
+    const { addToConversation, handleUserSelection } = this.props;
 
     if (action.type === TYPE_MESSAGE_INPUT) {
       const input = document.getElementById(message.key + '_textarea').value;
       /* Put the user input in a bubble */
-      addToConversation([{speaker: 'user', body: [{type: 'text', value: input}]}]);
+      handleUserSelection(input);
     } else {
       /* Display user's choice in user bubble */
-      addToConversation([{speaker: 'user', body: [{type: 'text', value: action.name}]}]);
+      handleUserSelection(action.name);
     }
     toogleIsFetching(true);
     fetchMessage(action.messageKey).then((resp) => {
@@ -78,6 +86,18 @@ class Conversation extends Component {
     return true;
   }
 
+  bookMarking = (index, remove) => {
+    if (remove) {
+      this.setState({
+        bookMarks: this.state.bookMarks.filter((b) => b !== index)
+      });
+      return;
+    }
+    this.setState({
+      bookMarks: [...this.state.bookMarks, index],
+    });
+  }
+
   render() {
     const { conversation } = this.props;
     return (
@@ -88,8 +108,11 @@ class Conversation extends Component {
           conversation.history.map((msg, i, arr) => 
             <ChatBubble
               key={ i }
+              index={ i }
               message={ msg }
               onActionClick={ this.onActionClick }
+              bookMarks={ this.state.bookMarks }
+              bookMarking={ this.bookMarking }
             />
           )
         }
@@ -120,6 +143,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     addToConversation: (addition) => {
       dispatch(updateConversation(addition));
+    },
+    handleUserSelection: (selection) => {
+      dispatch(updateLastMessage({selection}));
     },
   }
 }

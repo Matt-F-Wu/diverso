@@ -1,8 +1,11 @@
+@import "../../media/theme.css";
+
 .bubbleRow {
   display: flex;
   flex-direction: row;
   /*align-items: center;*/
   padding: 8px;
+  box-sizing: border-box;
 }
 
 .bubbleColumn {
@@ -59,6 +62,32 @@
 .avatar {
   width: 100%;
   height: auto;
+}
+
+.noBookmark {
+  /**/
+}
+
+.topBookmark {
+  border-style: solid;
+  border-width: 8px 8px 0 8px;
+  border-color: var(--color-theory);
+}
+
+.middleBookmark {
+  border-style: solid;
+  border-width: 0 8px 0 8px;
+  border-color: var(--color-theory);
+}
+
+.bottomBookmark {
+  border-style: solid;
+  border-width: 0 8px 8px 8px;
+  border-color: var(--color-theory);
+}
+
+.fullBookmark {
+  border: 8px solid var(--color-theory);
 }
 
 .choiceButtonWithMargin {

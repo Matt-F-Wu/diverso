@@ -17,6 +17,12 @@ const ConversationReducer = (state=initialState.conversation, action) => {
       return update(state, {
         history: { $push: action.addition },
       });
+    case Actions.UPDATE_LAST_MESSAGE:
+      return update(state, {
+        history: { 
+          [state.history.length - 1]: { $merge: action.selection},
+        },
+      });
     default:
       return state;
   }
