@@ -50,7 +50,7 @@ class AppBar extends Component {
           <Link to="/dialog" style={ { height: '100%', marginTop: 10 } }>
             <img src={ logo } className={ 'logo' }/>
           </Link>
-          <div class="flexRow flexCenter">
+          <div className="flexRow flexCenter">
             <TopNavLink icon={ t_icon }
               text={ "ToolKit" }
               to="/toolkit"

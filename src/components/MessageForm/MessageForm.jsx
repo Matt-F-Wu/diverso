@@ -183,7 +183,7 @@ export default class MessageForm extends Component {
                 value={ this.state.parentAction }
                 onChange={ this.handleInputChange } />
             </label>
-            <input type="submit" value="Find" />
+            <input type="submit" value="Find" className="base buttonGreen"/>
           </form>
         </div>
         <p className="statusMessage">{ this.state.parentStatusMessage }</p>
@@ -191,7 +191,7 @@ export default class MessageForm extends Component {
           { this.state.editPaneVisible && (
             <form onSubmit={ this.handleSubmitMessage }>
               <label>
-                <span>Message Key ( Alphanumeric and _ )</span>
+                <span className="formTitle">Message Key ( Alphanumeric and _ )</span>
                 <input
                   required
                   pattern="[a-zA-Z0-9_]+"
@@ -213,7 +213,7 @@ export default class MessageForm extends Component {
               </label>
               { !this.state.relink && (
                 <div>
-                <span>Message Body</span>
+                <span className="formTitle">Message Body</span>
                 {
                   [...this.state.messageBody,
                     {type: '', value: ''}].map((mb, i) =>
@@ -237,7 +237,7 @@ export default class MessageForm extends Component {
                     )
                 }
                 <label>
-                  <span style={ { marginBottom: 4 } }>Message Actions</span>
+                  <span className="formTitle">Message Actions</span>
                   {
                     [...this.state.messageActions,
                       {name: '', messageKey: ''}].map((ma, i) =>
@@ -269,7 +269,7 @@ export default class MessageForm extends Component {
                 </label>
                 </div>
               )}
-              <input type="submit" value="Submit" />
+              <input type="submit" value="Submit" className="base buttonGreen"/>
             </form>
           )}
         </div>

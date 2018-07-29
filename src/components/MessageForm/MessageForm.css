@@ -1,3 +1,5 @@
+@import "../../media/theme.css";
+
 .MessageFormContainer {
   display: flex;
   flex-direction: column;
@@ -15,6 +17,13 @@
   padding-bottom: 8px;
 }
 
+.formTitle {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 label {
   display: flex;
   flex-direction: column;
@@ -27,8 +36,12 @@ label>input, textarea {
   font-size: 14px;
 }
 
+textarea {
+  min-height: 100px;
+}
+
 .actionBubble {
-  border: 1px solid #e0e0e0;
+  border: 2px solid var(--color-program);
   border-radius: 8px;
   padding-top: 4px;
   margin-bottom: 8px;
