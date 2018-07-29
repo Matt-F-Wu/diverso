@@ -7,7 +7,6 @@ import logo from '../../media/logo.svg';
 /* Media imports */
 import c_icon from '../../media/conversation.svg';
 import t_icon from '../../media/toolkit.svg';
-import m_icon from '../../media/map.svg';
 import a_icon from '../../media/about.svg';
 /* States needed:
 user: Object *undefined meaning user is not logged in*
@@ -21,11 +20,12 @@ const TopLinkTextStyle = {
 // Simple pure component
 class TopNavLink extends Component {
   render(){
-    const { icon, text, to } = this.props;
+    const { icon, to, className, ...others } = this.props;
     return (
       <Link
+        {...others}
         to={to}
-        className={ window.location.pathname === to ? 'activeLink' : 'inactiveLink' }
+        className={ `${ window.location.pathname === to ? 'activeLink' : 'inactiveLink' } ${className}` }
         style={ {
           display: 'flex',
           flexDirection: 'column',
@@ -34,7 +34,6 @@ class TopNavLink extends Component {
           color: 'black',
         } } >
         <img src={ icon } />
-        <span>{ text }</span>
       </Link>
     );
   }
@@ -48,27 +47,26 @@ class AppBar extends Component {
         onClick={ () => {
           this.forceUpdate();
       } }>
-        <img src={ logo } className={ 'logo' }/>
-          <TopNavLink icon={ c_icon }
-            text={ "Let's Talk" }
-            to="/dialog"
-          />
-          <TopNavLink icon={ t_icon }
-            text={ "ToolKit" }
-            to="/toolkit"
-          />
-          <TopNavLink icon={ m_icon }
-            text={ "Theory Map" }
-            to="/map"
-          />
-          <TopNavLink icon={ a_icon }
-            text={ "About" }
-            to="/about"
-          />
-        <Button
-          label={ 'Sign In' }
-          type={ 'buttonGreen' }
-        />
+          <Link to="/dialog" style={ { height: '100%', marginTop: 10 } }>
+            <img src={ logo } className={ 'logo' }/>
+          </Link>
+          <div class="flexRow flexCenter">
+            <TopNavLink icon={ t_icon }
+              text={ "ToolKit" }
+              to="/toolkit"
+              className="marginHMedium"
+            />
+            <TopNavLink icon={ a_icon }
+              text={ "About" }
+              to="/about"
+              className="marginHMedium"
+            />
+            <Button
+              label={ 'Sign In' }
+              type={ 'buttonGreen' }
+              style={ { marginLeft: 16 } }
+            />
+          </div>
 			</div>
 		);
 	}

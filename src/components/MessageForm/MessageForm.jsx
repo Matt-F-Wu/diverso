@@ -13,8 +13,7 @@ export default class MessageForm extends Component {
     actionExist: false,
     relink: false,
     messageKey: '',
-    messageType: '',
-    messageBody: '',
+    messageBody: [],
     messageActions: [],
   };
 
@@ -25,7 +24,7 @@ export default class MessageForm extends Component {
       relink: false,
       parentStatusMessage: '',
       messageKey: '',
-      messageBody: '',
+      messageBody: [],
       messageActions: [],
     });
   }
@@ -47,6 +46,29 @@ export default class MessageForm extends Component {
     this.setState({
       [name]: value
     });
+  }
+
+  handleMessageBodyChange = (index) => {
+    return (event) => {
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
+
+      if (index >= this.state.messageBody.length) {
+        /* This is a new action, push one to the array */
+        this.state.messageBody.push({type: '', value: ''});
+      }
+
+      if (name === 'messageBodyType') {
+        this.state.messageBody[index].type = value;  
+      } else if (name === 'messageBodyValue') {
+        this.state.messageBody[index].value = value;
+      } else {
+        /* TODO: more field possible ? */
+      }
+
+      this.forceUpdate();
+    }
   }
 
   handleMessageActionsChange = (index) => {
@@ -97,7 +119,6 @@ export default class MessageForm extends Component {
         parentAction,
         relink,
         messageKey,
-        messageType,
         messageBody,
         messageActions,
       });
@@ -113,20 +134,21 @@ export default class MessageForm extends Component {
           console.log(resp);
           this.setState({
             parentStatusMessage: 'Action already exist! Allowing Update',
-            messageKey: resp.key,
-            messageType: resp.type,
-            messageBody: resp.body,
-            messageActions: resp.actions,
+            messageKey: resp.data.key,
+            messageBody: resp.data.body,
+            messageActions: resp.data.actions,
             editPaneVisible: true,
             actionExist: true,
           });
       })
       .catch((reason) => {
-        if (reason.code === 400) {
+        const { response } = reason;
+        console.log(response);
+        if (response.status === 400) {
           this.setState({
             parentStatusMessage: 'Parent does not exist!'
           });
-        } else if (reason.code === 404) {
+        } else if (response.status === 404) {
           this.setState({
             parentStatusMessage: `Creating new action for parent with key ${ parentKey }`,
             editPaneVisible: true,
@@ -179,16 +201,6 @@ export default class MessageForm extends Component {
               </label>
 
               <label>
-                <span>Message Type ( text, input )</span>
-                <input
-                  required
-                  pattern="[a-zA-Z0-9_]+"
-                  name="messageType" 
-                  value={ this.state.messageType }
-                  onChange={ this.handleInputChange } />
-              </label>
-
-              <label>
                 <span>
                 I am just linking to another existing Message
                 <input
@@ -201,13 +213,29 @@ export default class MessageForm extends Component {
               </label>
               { !this.state.relink && (
                 <div>
-                <label>
-                  <span>Message Body ( Simple text or JSX )</span>
-                  <textarea
-                    name="messageBody" 
-                    value={ this.state.messageBody }
-                    onChange={ this.handleInputChange } />
-                </label>
+                <span>Message Body</span>
+                {
+                  [...this.state.messageBody,
+                    {type: '', value: ''}].map((mb, i) =>
+                      <div key={ i } className="actionBubble">
+                        <label>
+                          <span>Segment Type ( text, JSX )</span>
+                          <input
+                            pattern="[a-zA-Z0-9_]+"
+                            name="messageBodyType" 
+                            value={ mb.type }
+                            onChange={ this.handleMessageBodyChange(i) } />
+                        </label>
+                        <label>
+                          <span>Segment content</span>
+                          <textarea
+                            name="messageBodyValue"
+                            value={ mb.value }
+                            onChange={ this.handleMessageBodyChange(i) } />
+                        </label>
+                    </div>
+                    )
+                }
                 <label>
                   <span style={ { marginBottom: 4 } }>Message Actions</span>
                   {

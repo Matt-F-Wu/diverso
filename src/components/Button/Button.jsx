@@ -4,10 +4,10 @@ import './Button.css';
 
 export default class Button extends Component {
   render() {
-    const { type, children, label, className, onClick } = this.props;
+    const { type, children, label, className, onClick, ...others } = this.props;
     
     return (
-      <div 
+      <div {...others}
         className={ `base ${ type || 'buttonGreyText' } ${ className }` }
         onClick={ onClick }>
         <div className="innerContainer">

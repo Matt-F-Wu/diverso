@@ -18,9 +18,11 @@
 }
 
 .activeLink {
+  padding: 8px;
   border-bottom: 3px solid var(--color-program);
 }
 
 .inactiveLink {
+  padding: 8px;
   border-bottom: 3px solid transparent;
 }

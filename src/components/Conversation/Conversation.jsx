@@ -27,10 +27,10 @@ class Conversation extends Component {
     if (action.type === TYPE_MESSAGE_INPUT) {
       const input = document.getElementById(message.key + '_textarea').value;
       /* Put the user input in a bubble */
-      addToConversation([{speaker: 'user', body: [input], type: 'text'}]);
+      addToConversation([{speaker: 'user', body: [{type: 'text', value: input}]}]);
     } else {
       /* Display user's choice in user bubble */
-      addToConversation([{speaker: 'user', body: [action.name], type: 'text'}]);
+      addToConversation([{speaker: 'user', body: [{type: 'text', value: action.name}]}]);
     }
     toogleIsFetching(true);
     fetchMessage(action.messageKey).then((resp) => {

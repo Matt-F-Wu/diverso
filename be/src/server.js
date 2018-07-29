@@ -32,11 +32,10 @@ app.use(bodyParser.json());
 
 // A middleware to check log-in
 app.use(function(request, response, next){
-    console.log('Hit');
     //If the user is not logged-in
     if(!request.session.login_name){
         //if the user wants to login or simply wants to chat
-        if(request.originalUrl === '/user/login' || request.originalUrl === '/user/register' || request.originalUrl.startsWith('/message/') || request.originalUrl === '/'){
+        if(request.originalUrl === '/user/login' || request.originalUrl === '/user/register' || request.originalUrl.startsWith('/message') || request.originalUrl === '/'){
             next();
         }else if(request.originalUrl === '/user/logout'){
             //bad request, status 400
@@ -187,8 +186,10 @@ app.get('/message/:key', function(request, response){
 });
 
 /* Retieving the next message given an action from a parent */
-app.get('/message/:parent/:action', function(request, response){
-    const { parent, action } = request.params;
+app.post('/message/:parent', function(request, response){
+    const { parent } = request.params;
+    const { action } = request.body;
+    // console.log('received:', parent, action);
     Message.findOne({key: parent})
     .exec(function(err, parent){
         if (parent === null) {
@@ -197,8 +198,13 @@ app.get('/message/:parent/:action', function(request, response){
             return;
         }
         let actionFound = parent.actions.filter((a) => a.name === action);
+        // console.log('found', actionFound);
         if (actionFound.length > 0) {
             const m_key = actionFound[0].messageKey;
+            if (!m_key) {
+                response.status(404).send('Linking message');
+                return;
+            }
             Message.findOne({key: m_key})
             .exec(function(err, message){
                 if (message === null) {
@@ -208,6 +214,8 @@ app.get('/message/:parent/:action', function(request, response){
                 }
                 response.status(200).send(message);
             });
+        } else {
+            response.status(404).send('action does not exist, need to create new one');
         }
     });
 
@@ -229,7 +237,6 @@ app.post('/message', function(request, response){
         parentAction,
         relink,
         messageKey,
-        messageType,
         messageBody,
         messageActions,
     } = request.body;
@@ -248,7 +255,6 @@ app.post('/message', function(request, response){
                 key: messageKey,
                 actions: messageActions,
                 body: messageBody,
-                type: messageType,
                 speaker: 'program',
             }).then((msg) => {
                 if (!parentKey) {
@@ -268,7 +274,7 @@ app.post('/message', function(request, response){
                         parent.actions.forEach((a, i) => {
                             if (a.name === parentAction) {
                                 foundAction = true;
-                                parent.actions[i].messageKey = 
+                                parent.actions[i].messageKey = messageKey;
                                 /* This action type is just a message */
                                 parent.actions[i].type = 'message';
                             }
@@ -295,9 +301,8 @@ app.post('/message', function(request, response){
             });
         } else {
             /* Message exist update */
-            message.actions = actions;
+            message.actions = messageActions;
             message.body = messageBody;
-            message.type = type;
             message.save();
             response.status(200).send('message updated');
         }

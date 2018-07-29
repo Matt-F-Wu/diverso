@@ -6,3 +6,44 @@
   --color-accent: #941F56;
   --color-grey: #E0E0E0;  
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.flexCenter {
+  justify-content: center;
+}
+
+.paddingSmall {
+  padding: 8px;
+}
+
+.paddingMedia {
+  padding: 16px;
+}
+
+.paddingLarge {
+  padding: 24px;
+}
+
+.marginHSmall {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.marginHMedium {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.marginHLarge {
+  margin-left: 24px;
+  margin-right: 24px;
+}

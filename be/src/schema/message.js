@@ -13,14 +13,18 @@ var actionSchema = new mongoose.Schema({
   messageKey: String,
 });
 
+var bodySchema = new mongoose.Schema({
+  type: {type: String, default: 'text'},
+  value: String,
+})
+
 // create a schema for message, key is used as index
 /* Type can either be 'text' or 'jsx' */
 var messageSchema = new mongoose.Schema({
     key: { type: String, index: true },
     speaker: String,
     actions: [actionSchema],
-    body: {type: [String], default: []},
-    type: String,
+    body: {type: [bodySchema], default: []},
 });
 
 // the schema is useless so far

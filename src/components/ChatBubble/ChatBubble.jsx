@@ -22,12 +22,12 @@ export default class ChatBubble extends Component {
         <div className="bubbleColumn">
           {
             message.body.map((ele) => 
-              message.type === 'text'
+              ele.type === 'text'
               ? <div
                   className={ `bubbleBase ${ bubbleClassName }` }>
-                  { ele }
+                  { ele.value }
                 </div>
-              : <div className="jsx_container" dangerouslySetInnerHTML={{ __html: ele}}></div>
+              : <div className="jsx_container" dangerouslySetInnerHTML={{ __html: ele.value}}></div>
             )
           }
           {/*Display user's choices here*/}
