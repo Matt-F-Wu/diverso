@@ -6,6 +6,7 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 // Load the Mongoose schema for User, Photo, and SchemaInfo
 var User = require('./schema/user.js');
+var cors = require('cors');
 /*The name 'Message' could be a little misleading, but Message is pretty much just the actual content*/
 var { Message } = require('./schema/message.js');
 var fs = require("fs");
@@ -17,23 +18,32 @@ var hashService = require('./encryption.js');
 mongoose.connect('mongodb://localhost/diverso');
 
 /* Enable CORS*/
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type");
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type");
+//   res.header('Access-Control-Allow-Credentials', 'true');
+//   next();
+// });
+
+app.use(cors({
+    origin:['http://localhost:3000', 'http://localhost:3001'],
+    methods:['GET','POST'],
+    credentials: true // enable set cookie
+}));
+
 // We have the express static module (http://expressjs.com/en/starter/static-files.html) do all
 // the work for us.
 app.use(express.static(__dirname));
 
 //Add new middleware, the secret here should never be exposed to anyone!
-app.use(session({secret: 'diverso_hao_matthew_wu', resave: false, saveUninitialized: false}));
+app.use(session({secret: 'diverso_hao_matthew_wu', resave: true, saveUninitialized: true}));
 app.use(bodyParser.json());
 
 // A middleware to check log-in
 app.use(function(request, response, next){
     //If the user is not logged-in
-    if(!request.session.login_name){
+    console.log(request.session);
+    if(!request.session.username){
         //if the user wants to login or simply wants to chat
         if(request.originalUrl === '/user/login' || request.originalUrl === '/user/register' || request.originalUrl.startsWith('/message') || request.originalUrl === '/'){
             next();
@@ -59,9 +69,9 @@ app.get('/', function (request, response) {
 });
 
 app.post('/user/login', function(request, response){
-    var login_name = request.body.login_name;
+    var username = request.body.username;
     var password = request.body.password;
-    User.findOne({login_name: login_name}, function(err, user){
+    User.findOne({username}, function(err, user){
         if(err){
             // Some error happened
             response.status(400).send(JSON.stringify(err));
@@ -69,16 +79,18 @@ app.post('/user/login', function(request, response){
         }
 
         if(!user){
-            //didn't find a user with login_name
+            //didn't find a user with username
             console.log("Account doesn't exist!");
             response.status(400).send("Account doesn't exist!");
             return;
         }
         if(hashService.doesPasswordMatch(user.password_digest, user.salt, password)){
             //password hash matched
-            request.session.login_name = login_name;
-            request.session.user_id = user._id;            
-            response.status(200).send(JSON.parse(JSON.stringify(user)));
+            request.session.username = username;
+            request.session.user_id = user._id;
+            request.session.save(() => {  
+                response.status(200).send(JSON.parse(JSON.stringify(user)));    
+            });
         }else{
             //Wrong password
             response.status(400).send("Bad password!");
@@ -89,7 +101,7 @@ app.post('/user/login', function(request, response){
 
 app.post('/user/logout', function(request, response){
     //Do I really need to delete the properties?
-    delete request.session.login_name;
+    delete request.session.username;
     delete request.session.user_id;
     console.log("Logging out now");
     request.session.destroy(function(err) {
@@ -105,34 +117,26 @@ app.post('/user/logout', function(request, response){
 /* The user is registering a new account */
 app.post('/user/register', function(request, response){
     //Do I really need to delete the properties?
-    var login_name = request.body.login_name; 
+    var username = request.body.username; 
     var password = request.body.password; 
-    var first_name = request.body.first_name; 
-    var last_name = request.body.last_name; 
-    var location = request.body.location; 
-    var description = request.body.description; 
     var occupation = request.body.occupation;
 
-    if(!login_name || !password || !first_name || !last_name){
+    if(!username || !password){
         response
         .status(400)
         .send("Missing information, cannot signup");
     }
-    //check if login_name already exist
-    User.findOne({login_name: login_name}).exec(
+    //check if username already exist
+    User.findOne({username: username}).exec(
         function(err, user){
             if(!user){
                 //no user with the given login name
                 var hashEntry = hashService.makePasswordEntry(password);
 
                 User.create({
-                    login_name: login_name, 
+                    username: username, 
                     password_digest: hashEntry.hash,
                     salt: hashEntry.salt, 
-                    first_name: first_name, 
-                    last_name: last_name, 
-                    location: location, 
-                    description: description, 
                     occupation: occupation
                 }).then((user) => {
                     response
@@ -154,11 +158,34 @@ app.post('/user/register', function(request, response){
 
 });
 
+app.post('/user/:username/addbookmarks', (request, response) => {
+    var username = request.params.username;
+    var bookmarks = request.body.bookmarks;
+    console.log('received', bookmarks);
+    User.findOne({username})
+    .exec(function(err, user){
+        if (err) {
+            response.status(405).send('Server error');
+            return;
+        }
+        if (user === null) {
+            console.log('User with _id:' + id + ' not found.');
+            response.status(400).send('User not found');
+            return;
+        }
+        console.log(user.bookmarks);
+        user.bookmarks = [...user.bookmarks, ...bookmarks];
+        user.save(() => {
+            response.status(200).send('bookmarks saved');
+        });
+    });
+});
+
 /* Used to return information about another user, not sure if we need this*/
 app.get('/user/:id', function (request, response) {
     var id = request.params.id;
     User.findOne({_id: id})
-    .select("_id first_name last_name location description occupation")
+    .select("_id username occupation")
     .exec(function(err, user){
         if (user === null) {
             console.log('User with _id:' + id + ' not found.');

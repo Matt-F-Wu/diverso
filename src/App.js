@@ -13,15 +13,15 @@ class App extends Component {
   render() {
     return (
       <Router>
-      <div className="App">
-        <AppBar />
-        <Route exact path="/" component={ Conversation } />
-        <Route exact path="/dialog" component={ Conversation } />
-        <Route exact path="/toolkit" component={ ToolKit } />
-        <Route exact path="/map" component={ TheoryMap } />
-        <Route exact path="/about" component={ About } />
-        <Route exact path="/admin/edit" component={ MessageForm } />
-      </div>
+        <div className="App">
+          <AppBar />
+          <Route exact path="/" component={ Conversation } />
+          <Route exact path="/dialog" component={ Conversation } />
+          <Route exact path="/toolkit" component={ ToolKit } />
+          <Route exact path="/map" component={ TheoryMap } />
+          <Route exact path="/about" component={ About } />
+          <Route exact path="/admin/edit" component={ MessageForm } />
+        </div>
       </Router>
     );
   }

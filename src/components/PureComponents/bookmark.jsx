@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './theme.css';
+import '../../media/theme.css';
 
 const BMIcon = (props) => {
   const { marked } = props;

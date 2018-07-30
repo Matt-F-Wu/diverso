@@ -4,7 +4,9 @@
   --color-choice: #941F56;
   --color-theory: #F27E7E;
   --color-accent: #941F56;
-  --color-grey: #E0E0E0;  
+  --color-grey: #E0E0E0;
+  --color-dark: #757575; 
+  --color-pink: #F27E7E; 
 }
 
 .flexRow {

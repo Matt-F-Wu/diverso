@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './ChatBubble.css';
 import Button from '../Button';
 import bird_circle from '../../media/bird_circle.svg';
-import BMIcon from '../../media/bookmark';
+import raise_hand from '../../media/raise_hand.svg';
+import BMIcon from '../PureComponents/bookmark';
 
 export default class ChatBubble extends Component {
   state={
@@ -60,7 +61,7 @@ export default class ChatBubble extends Component {
 
 	render() {
     /* hostRef needed for Pose animation */
-		const { hostRef, message, onActionClick } = this.props;
+		const { hostRef, message, onActionClick, raiseHand } = this.props;
     const { bookMarkingType } = this.state;
     // border style picking
     let borderStyle = '';
@@ -119,11 +120,18 @@ export default class ChatBubble extends Component {
             </div>
             )
             }
+            { message.extra }
           </div>
           {
             this.state.showMenu &&
             <div className="floatingMenu">
                 <BMIcon onClick={ this.onClickBookmark } marked={ this.state.bookMarked }/>
+                <div
+                  className="hoverableMenuItem"
+                  onClick={ raiseHand }
+                >
+                  <img src={ raise_hand } width="48" height="48"/>
+                </div>
             </div>
           }
         </div>

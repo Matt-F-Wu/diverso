@@ -7,17 +7,18 @@
 var mongoose = require('mongoose');
 var { messageSchema } = require('./message.js');
 
+var bookmarkSchema = new mongoose.Schema({
+  folder: { type: String, default: 'general'},
+  message: messageSchema,
+});
+
 // create a schema
 var userSchema = new mongoose.Schema({
-    first_name: String, // First name of the user.
-    last_name: String,  // Last name of the user.
-    location: String,    // Location  of the user.
-    description: String,  // A brief user description
-    occupation: String,    // Occupation of the user.
-    login_name: String,
+    username: { type: String, index: true },
     password_digest: String,
     salt: String,
-    history: {type: [messageSchema], default: []},
+    occupation: String,    // Occupation of the user.
+    bookmarks: {type: [bookmarkSchema], default: []},
 });
 
 // the schema is useless so far

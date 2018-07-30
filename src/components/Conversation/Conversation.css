@@ -1,7 +1,7 @@
 @import "../../media/theme.css";
 
 .conversationContainer {
-  padding: 8px 10% 8px 10%;
+  padding: 8px 15% 8px 15%;
 }
 
 .floatingButton {
@@ -20,6 +20,49 @@
   animation: Drop 0.6s ease-in;
 }
 
+.switchButton {
+  width: calc(33% - 60px);
+  margin-left: 12px;
+  margin-right: 12px;
+  border: 2px solid var(--color-program);
+  background-color: white;
+  text-align: center;
+  color: var(--color-program);
+}
+
+.floatingMenuBM {
+  position: fixed;
+  cursor: pointer;
+  max-height: 200px;
+  bottom: 108px;
+  right: 108px;
+  padding: 16px;
+  box-sizing: border-box;
+  background-color: var(--color-program);
+  border-radius: 6px;
+  text-align: center;
+  /*box-shadow: 2px 6px 12px #999;*/
+  animation: RotateIn 0.6s ease-in;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border-radius: 6px;
+  width: 200px;
+}
+
+.listItem {
+  border: 2px solid var(--color-pink);
+}
+
+.listItemInset {
+  background-color: var(--color-pink);
+  color: white;
+  border: 6px solid white;
+}
+
 @keyframes Drop {
   from { transform: translateY(-60px); }
   65% { transform: translateY(0px); }
@@ -27,4 +70,9 @@
   90% { transform: translateY(0px); }
   95% { transform: translateY(5px); }
   to { transform: translateY(0px); }
+}
+
+@keyframes RotateIn {
+  from { transform: rotate(90deg); bottom: 120px; right: 52px; }
+  to { transform: rotate(0deg); bottom: 108px; right: 108px; }
 }

@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Button from '../Button';
+import LogIn from '../LogIn';
 import './AppBar.css';
 import logo from '../../media/logo.svg';
 /* Media imports */
 import c_icon from '../../media/conversation.svg';
 import t_icon from '../../media/toolkit.svg';
 import a_icon from '../../media/about.svg';
+import {
+  setUser,
+} from '../LogIn/actions';
 /* States needed:
 user: Object *undefined meaning user is not logged in*
 */
@@ -40,7 +44,31 @@ class TopNavLink extends Component {
 }
 
 class AppBar extends Component {
+  state = {
+    modalOpen: false,
+  }
+
+  constructor(props) {
+    super(props);
+    /* global sessionStorage */
+    const userData = sessionStorage.getItem('diverso_session_user') || {};
+    const { userLoggedIn } = props;
+    /* global JSON */
+    if (userData !== {}) {
+      console.log(userData);
+      try{
+        let userDataObj = JSON.parse(userData);
+        userLoggedIn(userDataObj);
+      } catch(err) {
+        userLoggedIn({});
+        console.log(err);
+      }
+    }
+  }
+
 	render(){
+    const { userData } = this.props.user;
+    
 		return (
 			<div 
         className={ 'container' } 
@@ -50,7 +78,13 @@ class AppBar extends Component {
           <Link to="/dialog" style={ { height: '100%', marginTop: 10 } }>
             <img src={ logo } className={ 'logo' }/>
           </Link>
-          <div className="flexRow flexCenter">
+          <div className="flexRow flexCenter" style={ {alignItems: 'center'} }>
+            { userData.username && 
+              <Button
+                label={ userData.username.substring(0, 1).toUpperCase() }
+                className="userIcon"
+              /> 
+            }
             <TopNavLink icon={ t_icon }
               text={ "ToolKit" }
               to="/toolkit"
@@ -62,17 +96,31 @@ class AppBar extends Component {
               className="marginHMedium"
             />
             <Button
+              onClick={ () => { this.setState({modalOpen: true}); } }
               label={ 'Sign In' }
               type={ 'buttonGreen' }
               style={ { marginLeft: 16 } }
             />
           </div>
+          { this.state.modalOpen &&
+            <LogIn
+              onCancel={() => { this.setState({modalOpen: false}); }}
+            />
+          }
 			</div>
 		);
 	}
 }
 
 /* Define Redux Container */
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLoggedIn: (user) => {
+      dispatch(setUser(user));
+    },
+  }
+};
+
 const mapStateToProps = (state) => {
   return {
     user: state.user,
@@ -81,5 +129,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps,
 )(AppBar);

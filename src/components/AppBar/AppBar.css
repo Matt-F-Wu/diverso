@@ -26,3 +26,14 @@
   padding: 8px;
   border-bottom: 3px solid transparent;
 }
+
+.userIcon {
+  background-color: var(--color-program);
+  color: white;
+  border-radius: 50%;
+  border: 6px solid var(--color-user);
+  width: 30px;
+  height: 30px;
+  font-size: 14pt;
+  font-weight: bold;
+}

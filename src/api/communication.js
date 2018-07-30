@@ -1,11 +1,13 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 
 const instance = axios.create({
   baseURL: 'http://localhost:3001',
   timeout: 60000,
   headers: {
 	  'Content-Type': 'application/json',
-  }
+  },
+  withCredentials: true,
 });
 
 /* Defining conversation data interface as such:
@@ -41,4 +43,31 @@ export function fetchMessage(key) {
 export function addUpdateMessage(update) {
   const requestUrl = `/message`;
   return instance.post(requestUrl, update);
+}
+
+export function loginUser(username, password) {
+  const requestUrl = '/user/login';
+  return instance.post(requestUrl, {username, password});
+}
+
+export function logoutUser() {
+  const requestUrl = '/user/logout';
+  return instance.post(requestUrl);
+}
+
+export function registerUser(user) {
+  const requestUrl = '/user/register';
+  return instance.post(requestUrl, user);
+}
+
+function extractMessage(message){
+  const { key, speaker, actions, body } = message;
+  return { key, speaker, actions, body };
+}
+
+export function addUserBookmarks(username, bookmarks, folder) {
+  const requestUrl = `/user/${ username }/addbookmarks`;
+  return instance.post(requestUrl, {bookmarks: 
+    bookmarks.map((bm) => {return { folder, message: extractMessage(bm)};} ),
+  });
 }

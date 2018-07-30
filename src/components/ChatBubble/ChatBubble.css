@@ -41,7 +41,7 @@
 .choiceBubble {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   border-color: transparent;
   text-align: center;
 }
@@ -103,6 +103,20 @@
   align-items: center;
   margin-left: 32px;
   animation: slideInFromLeft 0.4s ease-in-out;
+}
+
+.hoverableMenuItem {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 6px;
+  box-sizing: border-box;
+  margin-top: 24px;
+  background-color: var(--color-grey);
+}
+
+.hoverableMenuItem:hover img {
+  filter: sepia(100%) saturate(500%) hue-rotate(270deg) brightness(40%) saturate(500%);
 }
 
 @keyframes slideInFromLeft {

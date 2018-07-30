@@ -3,6 +3,7 @@ export const TOOGLE_IS_FETCHING = 'TOOGLE_IS_FETCHING';
 export const SET_CONVERSATION = 'SET_CONVERSATION';
 export const UPDATE_CONVERSATION = 'UPDATE_CONVERSATION';
 export const UPDATE_LAST_MESSAGE = 'UPDATE_LAST_MESSAGE';
+
 /* Define actions */
 export function toogleIsFetching(boolean) {
 	return {

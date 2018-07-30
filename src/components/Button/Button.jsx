@@ -8,7 +8,7 @@ export default class Button extends Component {
     
     return (
       <div {...others}
-        className={ `base ${ type || 'buttonGreyText' } ${ className }` }
+        className={ `base ${ type || '' } ${ className }` }
         onClick={ onClick }>
         <div className="innerContainer">
           { label }
