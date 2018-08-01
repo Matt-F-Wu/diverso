@@ -2,8 +2,30 @@ import React, { Component } from 'react';
 import './ToolKit.css';
 import { connect } from 'react-redux';
 import ChatBubble from '../ChatBubble';
+import { fetchUser } from '../../api/communication';
+import {
+  toogleIsFetching,
+  setUser,
+} from '../LogIn/actions';
 
 class ToolKit extends Component {
+  
+  constructor(props) {
+    super(props);
+    const { user, updateUser, mutateFetchingStatus } = props;
+    if ( user.userData && user.userData._id) {
+      mutateFetchingStatus(true);
+      fetchUser(user.userData._id).then((user) => {
+        this.props.updateUser(user.data);
+        mutateFetchingStatus(false);
+        console.log(user);
+      }).catch((err) => {
+        mutateFetchingStatus(false);
+        console.log(err);
+      });
+    }
+  }
+
   renderFolders = () => {
     const { bookmarks } = this.props.user.userData;
     const folders = {};
@@ -65,7 +87,18 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateUser: (user) => {
+      dispatch(setUser(user));
+    },
+    mutateFetchingStatus: (boolean) => {
+      dispatch(toogleIsFetching(boolean));
+    },
+  }
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(ToolKit);

@@ -34,15 +34,22 @@
   position: fixed;
   cursor: pointer;
   max-height: 200px;
-  bottom: 108px;
-  right: 108px;
+  bottom: 40px;
+  right: 40px;
   padding: 16px;
   box-sizing: border-box;
-  background-color: var(--color-program);
+  background-color: white;
+  border: 2px solid var(--color-program);
   border-radius: 6px;
   text-align: center;
   /*box-shadow: 2px 6px 12px #999;*/
-  animation: RotateIn 0.6s ease-in;
+  animation: TurnSquare 0.3s ease-in-out;
+  z-index: 100;
+}
+
+.floatingMenuBMContent {
+  animation: ShowUp 0.2s ease-in-out;
+  animation-delay: 0.3s;
 }
 
 .list {
@@ -72,7 +79,13 @@
   to { transform: translateY(0px); }
 }
 
-@keyframes RotateIn {
-  from { transform: rotate(90deg); bottom: 120px; right: 52px; }
-  to { transform: rotate(0deg); bottom: 108px; right: 108px; }
+@keyframes TurnSquare {
+  from { border-radius: 40px; width: 80px; height: 80px; background-color: var(--color-program); }
+  80% { background-color: var(--color-program); }
+  to { border-radius: 40px; width: 232px; height: 232px; background-color: white; }
+}
+
+@keyframes ShowUp {
+  from {opacity: 0;}
+  to {opacity: 1;}
 }

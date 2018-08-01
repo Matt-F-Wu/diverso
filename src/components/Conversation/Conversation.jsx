@@ -5,10 +5,15 @@ import {
   setConversation,
   updateConversation,
   updateLastMessage } from './actions';
+import {
+  setBookmarks,
+  addBookmarks,
+} from '../LogIn/actions';
 import initialState from '../initialState';
 import { connect } from 'react-redux';
 import ChatBubble from '../ChatBubble';
 import Button from '../Button';
+import Dialog from '../Dialog';
 import { 
   fetchConversationHistory,
   fetchMessage,
@@ -23,6 +28,7 @@ class Conversation extends Component {
   state = {
     bookMarks: [],
     showFolderList: false,
+    showDialog: false,
   }
   /*Define switch message*/
   messageSwitch = {
@@ -78,6 +84,20 @@ class Conversation extends Component {
     this.el.scrollIntoView({ behavior: "smooth" });
   }
 
+  openDialog = (dialogTitle, dialogBody) => {
+    this.setState({
+      dialogTitle,
+      dialogBody,
+      showDialog: true,
+    });
+  }
+
+  cancelDialog = () => {
+    this.setState({
+      showDialog: false,
+    });
+  }
+
   onActionClick = (action, message) => {
     const { addToConversation, handleUserSelection } = this.props;
     const { history } = this.props.conversation;
@@ -106,6 +126,7 @@ class Conversation extends Component {
       addToConversation([resp.data]);
     }).catch((err) => {
       console.log('Error ===>', err);
+      this.openDialog('Cannot respond', err.response.data);
       toogleIsFetching(false);
     });
   }
@@ -137,7 +158,7 @@ class Conversation extends Component {
     const { userData } = nextProps.user;
     if (!!userData && !this.props.user.userData){
       // User is recently set
-      console.log('User got set');
+      // console.log('User got set');
       this.props.mutateFetchingStatus(true);
       fetchConversationHistory(userData.userId).then((history) => {
         this.props.populateConversation(history);
@@ -166,14 +187,23 @@ class Conversation extends Component {
     // empty bookmarks too
     return () => {
       const { bookMarks } = this.state;
-      const { user, conversation } = this.props;
-      addUserBookmarks(user.userData.username, conversation.history.filter((m, i) => bookMarks.includes(i)), folder)
+      const { user, conversation, updateBookmarks } = this.props;
+      const bms = conversation.history.filter((m, i) => bookMarks.includes(i));
+      bms.forEach((bm) => {bm.folder = folder});
+      addUserBookmarks(user.userData.username, bms, folder)
       .then((resp) => {
         // TODO: success
         console.log(resp);
+        updateBookmarks(bms);
+        this.openDialog('Success', 'Bookmark Added');
       }).catch((err) => {
         /* TODO: signal error */
-        console.log(err.response);
+        if (!err.response) {
+          console.log(err);
+          return;
+        }
+        console.log(err);
+        this.openDialog("Error", err.response.data);
       });
       this.setState({
         bookMarks: [],
@@ -199,7 +229,7 @@ class Conversation extends Component {
         folders.map((folder) => (
           <div
             className="listItem"
-            onClick={ this.submitBookmarks() } >
+            onClick={ this.submitBookmarks(folder) } >
             <div className="listItemInset">{ folder }</div>
           </div>
           )
@@ -231,18 +261,33 @@ class Conversation extends Component {
         <div></div>
       </div>
       { this.state.bookMarks.length > 0 &&
-        <img src={ done_icon } width="100" height="100" className="floatingButton" onClick={ () => {this.setState({showFolderList: true})} }/>
+        <img src={ done_icon } width="100" height="100" className="floatingButton"
+          onClick={ () => {
+            console.log(user.userData);
+            if (user.userData && user.userData.username) {
+              this.setState({showFolderList: true});
+            } else {
+              this.openDialog('Wait', 'You need to log in!');
+            }
+          } }
+        />
       }
       {
         this.state.bookMarks.length > 0 && this.state.showFolderList &&
         <div className="floatingMenuBM">
-          <span>Save as</span>
-          <p>in</p>
-          {
-            user.userData.bookmarks &&
-            this.renderFolders()
-          }
+          <div className="floatingMenuBMContent">
+            <span style={ { color: '#757575', fontWeight: 'bold' } }>Save In:</span>
+            {
+              user.userData.bookmarks &&
+              this.renderFolders()
+            }
+          </div>
         </div>
+      }
+      { this.state.showDialog &&
+        <Dialog
+          labelPos="Okay" clickPos={ this.cancelDialog } title={ this.state.dialogTitle } body={ this.state.dialogBody }
+        /> 
       }
       <div ref={el => { this.el = el; }}></div>
       </div>
@@ -259,7 +304,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     mutateFetchingStatus: (boolean) => {
       dispatch(toogleIsFetching(boolean));
@@ -272,6 +317,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     handleUserSelection: (selection) => {
       dispatch(updateLastMessage({selection}));
+    },
+    updateBookmarks: (bookmarks) => {
+      dispatch(addBookmarks(bookmarks));
     },
   }
 }

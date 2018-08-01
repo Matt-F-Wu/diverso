@@ -60,6 +60,11 @@ export function registerUser(user) {
   return instance.post(requestUrl, user);
 }
 
+export function fetchUser(id) {
+  const requestUrl = `/user/${ id }`;
+  return instance.get(requestUrl);
+}
+
 function extractMessage(message){
   const { key, speaker, actions, body } = message;
   return { key, speaker, actions, body };

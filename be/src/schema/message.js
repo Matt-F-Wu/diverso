@@ -25,6 +25,7 @@ var messageSchema = new mongoose.Schema({
     speaker: String,
     actions: [actionSchema],
     body: {type: [bodySchema], default: []},
+    selection: {type: String, default: ''},
 });
 
 // the schema is useless so far

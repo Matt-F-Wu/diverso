@@ -4,10 +4,9 @@ import './LogIn.css';
 import { connect } from 'react-redux';
 import {
   toogleIsFetching,
-  setBookmarks,
-  addBookmarks,
   setUser,
 } from './actions';
+
 
 /* global sessionStorage */
 class LogIn extends Component {
@@ -36,7 +35,7 @@ class LogIn extends Component {
 
   loginRegister = (e) => {
     e.preventDefault();
-    const { userLoggedIn, mutateFetchingStatus } = this.props;
+    const { userLoggedIn, mutateFetchingStatus, reportError } = this.props;
     if (!this.state.isRegister) {
       const { username, password } = this.state;
       mutateFetchingStatus(true);
@@ -44,7 +43,7 @@ class LogIn extends Component {
         username,
         password,
       ).then((user) => {
-        console.log(JSON.stringify(user) );
+        // console.log(JSON.stringify(user) );
         mutateFetchingStatus(false);
         userLoggedIn(user.data);
         sessionStorage.setItem('diverso_session_user', JSON.stringify(user.data));
@@ -52,6 +51,8 @@ class LogIn extends Component {
       }).catch((err) => {
         mutateFetchingStatus(false);
         console.log(err.response);
+        reportError('Login Failed', err.response.data);
+        this.cancelModal({target: {id: 'modal'}});
       });
     } else {
       const { username, password, passwordRepeat, occupation } = this.state;
@@ -77,10 +78,14 @@ class LogIn extends Component {
         }).catch((err) => {
           mutateFetchingStatus(false);
           console.log(err.response);
+          reportError('Login Failed', err.response.data);
+          this.cancelModal({target: {id: 'modal'}});
         });
       }).catch((err) => {
         mutateFetchingStatus(false);
         console.log(err.response);
+        reportError('Registration Failed', err.response.data);
+        this.cancelModal({target: {id: 'modal'}});
       });
     }
   }

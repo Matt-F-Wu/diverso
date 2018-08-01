@@ -14,11 +14,14 @@ const UserReducer = (state=initialState.user, action) => {
       });
     case Actions.ADD_BOOKMARKS:
       /* action.addition must be an array */
-      return update(state, {
-        userData: {
-          bookmarks: { $push: action.addition },
-        },
-      });
+      /* allow SET_BOOKMARKS to take control if no bookmarks exist */
+      if (state.userData.bookmarks) {
+        return update(state, {
+          userData: {
+            bookmarks: { $push: action.addition },
+          },
+        });
+      }
     case Actions.SET_BOOKMARKS:
       return update(state, {
         userData: {

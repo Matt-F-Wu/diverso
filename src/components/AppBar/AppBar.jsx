@@ -12,6 +12,7 @@ import a_icon from '../../media/about.svg';
 import {
   setUser,
 } from '../LogIn/actions';
+import Dialog from '../Dialog';
 /* States needed:
 user: Object *undefined meaning user is not logged in*
 */
@@ -46,6 +47,9 @@ class TopNavLink extends Component {
 class AppBar extends Component {
   state = {
     modalOpen: false,
+    showDialog: false,
+    dialogTitle: '',
+    dialogBody: '',
   }
 
   constructor(props) {
@@ -64,6 +68,20 @@ class AppBar extends Component {
         console.log(err);
       }
     }
+  }
+
+  cancelDialog = () => {
+    this.setState({
+      showDialog: false,
+    });
+  }
+
+  reportError = (dialogTitle, dialogBody) => {
+    this.setState({
+      dialogTitle,
+      dialogBody,
+      showDialog: true,
+    });
   }
 
 	render(){
@@ -105,7 +123,13 @@ class AppBar extends Component {
           { this.state.modalOpen &&
             <LogIn
               onCancel={() => { this.setState({modalOpen: false}); }}
+              reportError={ this.reportError }
             />
+          }
+          { this.state.showDialog &&
+            <Dialog
+              labelPos="Okay" clickPos={ this.cancelDialog } title={ this.state.dialogTitle } body={ this.state.dialogBody }
+            /> 
           }
 			</div>
 		);

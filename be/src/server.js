@@ -185,7 +185,6 @@ app.post('/user/:username/addbookmarks', (request, response) => {
 app.get('/user/:id', function (request, response) {
     var id = request.params.id;
     User.findOne({_id: id})
-    .select("_id username occupation")
     .exec(function(err, user){
         if (user === null) {
             console.log('User with _id:' + id + ' not found.');
