@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './ToolKit.css';
 import { connect } from 'react-redux';
-import ChatBubble from '../ChatBubble';
+import Dialog from '../Dialog';
+import BookMarkFolder from '../BookMarkFolder';
 import { fetchUser } from '../../api/communication';
 import {
   toogleIsFetching,
@@ -9,25 +10,16 @@ import {
 } from '../LogIn/actions';
 
 class ToolKit extends Component {
-  
-  constructor(props) {
-    super(props);
-    const { user, updateUser, mutateFetchingStatus } = props;
-    if ( user.userData && user.userData._id) {
-      mutateFetchingStatus(true);
-      fetchUser(user.userData._id).then((user) => {
-        this.props.updateUser(user.data);
-        mutateFetchingStatus(false);
-        console.log(user);
-      }).catch((err) => {
-        mutateFetchingStatus(false);
-        console.log(err);
-      });
-    }
+  state = {
+    folderChosen: null,
+    showDialog: false,
+    dialogTitle: '',
+    dialogBody: '',
+    folders: [],
   }
 
-  renderFolders = () => {
-    const { bookmarks } = this.props.user.userData;
+  static getDerivedStateFromProps(props, state) {
+    const { bookmarks } = props.user.userData;
     const folders = {};
     if(bookmarks){
       bookmarks.forEach((bm) => {
@@ -38,29 +30,51 @@ class ToolKit extends Component {
         }
       });
     }
-    console.log(folders['general'], Object.keys(folders));
+    return { folders: folders };
+  }
+  
+  constructor(props) {
+    super(props);
+    const { user, updateUser, mutateFetchingStatus } = props;
+    if ( user.userData && user.userData._id) {
+      mutateFetchingStatus(true);
+      fetchUser(user.userData._id).then((user) => {
+        this.props.updateUser(user.data);
+        mutateFetchingStatus(false);
+      }).catch((err) => {
+        mutateFetchingStatus(false);
+        this.openDialog('Sorry', 'Cannot sync your bookmarks with our server at the moment, try refresh!');
+      });
+    }
+  }
+
+  openDialog = (dialogTitle, dialogBody) => {
+    this.setState({
+      dialogTitle,
+      dialogBody,
+      showDialog: true,
+    });
+  }
+
+  cancelDialog = () => {
+    this.setState({
+      showDialog: false,
+    });
+  }
+
+  renderFolders = () => {
+    const { folders } = this.state;
+    
     return (
-      <div>
+      <div className="panelFlexFull">
         {
           folders && Object.keys(folders).map((f, i) =>
-            <div class="">
-              <p>{ f }</p>
-              {
-                folders['general'].map((message, idx) => {
-                  return (
-                    message &&
-                    <ChatBubble
-                      key={ i }
-                      index={ i }
-                      message={ message }
-                      bookMarks={ [] }
-                      bookMarking={ () => {} }
-                      raiseHand={ () => {} }
-                      onActionClick={ () => {} } />
-                  );
-                })  
-              }
-            </div>
+            <BookMarkFolder
+              folders={folders}
+              fname={ f }
+              i={ i }
+              key={ i }
+            />
           )
         }
       </div>
@@ -68,11 +82,33 @@ class ToolKit extends Component {
   }
 
   render() {
+    const { userData } = this.props.user;
+    const { folders } = this.state;
+    if (!userData.username) {
+      return null;
+    }
     return (
       <div className="ToolKitContainer">
-        <p>Your bookmarks</p>
+        <div
+          className="userInfoBM"
+          style={ {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 32,
+            width: '20%',
+            flexWrap: 'wrap',
+          } }
+        >
+          <p className="greyBoldText">{ userData.username }</p>
+          <p><span className="pinkText">{ userData.bookmarks.length }</span> bookmarks</p>
+          <p>in <span className="pinkText">{ Object.keys(folders).length }</span> folders</p>
+        </div>
+        { this.renderFolders() }
         {
-          this.renderFolders()
+          this.state.showDialog &&
+          <Dialog
+            labelPos="Okay" clickPos={ this.cancelDialog } title={ this.state.dialogTitle } body={ this.state.dialogBody }
+          />
         }
       </div>
     );

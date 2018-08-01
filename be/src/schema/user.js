@@ -8,7 +8,8 @@ var mongoose = require('mongoose');
 var { messageSchema } = require('./message.js');
 
 var bookmarkSchema = new mongoose.Schema({
-  folder: { type: String, default: 'general'},
+  folder: { type: String, default: 'general' },
+  name: { type: String, default: 'untitled' },
   message: messageSchema,
 });
 

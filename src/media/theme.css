@@ -5,6 +5,7 @@
   --color-theory: #F27E7E;
   --color-accent: #941F56;
   --color-grey: #E0E0E0;
+  --color-light: #EEEEEE;
   --color-dark: #757575; 
   --color-pink: #F27E7E; 
 }
@@ -72,4 +73,27 @@
 
 .iconClicked svg path {
   fill: white;
+}
+
+.greyBoldText {
+  color: var(--color-dark);
+  font-weight: bold;
+  font-size: 13pt;
+}
+
+.pinkText {
+  color: var(--color-pink);
+  font-weight: bold;
+}
+
+@keyframes AppearFlex {
+  from  { opacity: 0; }
+  60%  { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes AppearBlock {
+  from  { opacity: 0; }
+  60%  { opacity: 0; }
+  to { opacity: 1; }
 }

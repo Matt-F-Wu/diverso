@@ -153,7 +153,7 @@ class LogIn extends Component {
                   onChange={ this.handleInputChange } />
                 <span className="highlight"></span>
                 <span className="bar"></span>
-                <label className="loginLabel">{ 'Occupation (optional)' }</label>
+                <label className="loginLabel">{ 'Occupation' }</label>
               </div>
 
             </div>

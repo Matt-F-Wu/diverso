@@ -5,7 +5,7 @@ import bird_circle from '../../media/bird_circle.svg';
 import raise_hand from '../../media/raise_hand.svg';
 import BMIcon from '../PureComponents/bookmark';
 
-export default class ChatBubble extends Component {
+class ChatBubble extends Component {
   state={
     showMenu: false,
     bookMarked: false,
@@ -94,9 +94,9 @@ export default class ChatBubble extends Component {
         >
           <div className="flexColumn" style={{width: 'calc(100% - 60px)', minWidth: 'calc(100% - 60px)'}}>
             {
-              message.body.map((ele) => 
+              message.body.map((ele, i) => 
                 ele.type === 'text'
-                ? <div
+                ? <div key={ i }
                     className={ `bubbleBase ${ bubbleClassName }` }>
                     { ele.value }
                   </div>
@@ -151,3 +151,5 @@ export default class ChatBubble extends Component {
     );
 	}
 }
+
+export default ChatBubble;

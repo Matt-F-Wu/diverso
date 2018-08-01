@@ -1,0 +1,50 @@
+@import "../../media/theme.css";
+
+.bmfSmall {
+  display: inline-block;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.textContainer {
+  display: flex;
+  box-sizing: border-box;
+  width: 200px;
+  padding: 16px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-pink);
+  color: white;
+  border: 6px solid white;
+}
+
+.bmfExpanded {
+  display: flex;
+  flex: 1;
+  width: calc(100% - 64px);
+  height: calc(100% - 64px);
+  flex-direction: column;
+  position: absolute;
+  align-items: flex-start;
+  justify-content: flex-start;
+  top: 32px;
+  left: 32px;
+  background-color: var(--color-light);
+  border: 2px solid var(--color-pink);
+  animation: GrowFlex 0.8s ease-in-out;
+  z-index: 10;
+}
+
+.bmfExpanded>.bmContent {
+  animation: AppearFlex 0.8s ease-in-out;
+}
+
+.bmfExpanded>.bmCard {
+  border: 0px !important;
+}
+
+@keyframes GrowFlex {
+  from  { width: 200px; height: 80px; background-color: white; }
+  50% { background-color: white; }
+  to { width: calc(100% - 64px); height: calc(100% - 64px); background-color: var(--color-light); }
+}
