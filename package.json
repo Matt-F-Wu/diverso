@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo Test your code by opening http://localhost:3001 in your browser.",
     "jshint": "./node_modules/.bin/jshint --config .jshintrc --exclude=node_modules,test . || exit 0",
-    "start": "node src/server.js",
+    "start": "node server.js",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "author": "Hao Wu: wuhao20@stanford.edu, wuhao20utoronto@gmail.com",
