@@ -65,10 +65,6 @@ app.use(function(request, response, next){
 
 // ======> User related REST calls <======
 
-app.get('/', function (request, response) {
-    response.send('Oops, nothing much here - Hao');
-});
-
 app.post('/user/login', function(request, response){
     var username = request.body.username;
     var password = request.body.password;
