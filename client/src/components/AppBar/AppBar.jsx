@@ -98,10 +98,12 @@ class AppBar extends Component {
           </Link>
           <div className="flexRow flexCenter" style={ {alignItems: 'center'} }>
             { userData.username && 
-              <Button
-                label={ userData.username.substring(0, 1).toUpperCase() }
-                className="userIcon"
-              /> 
+              <Link to="/dialog" style={ { height: '100%' } } className="marginHMedium">
+                <Button
+                  label={ userData.username.substring(0, 1).toUpperCase() }
+                  className="userIcon"
+                />
+              </Link>
             }
             <TopNavLink icon={ t_icon }
               text={ "ToolKit" }

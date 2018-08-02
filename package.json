@@ -1,24 +1,23 @@
 {
-  "name": "app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "axios": "^0.18.0",
-    "popmotion-pose": "^2.1.0",
-    "react": "^16.4.1",
-    "react-addons-update": "^15.6.2",
-    "react-dom": "^16.4.1",
-    "react-pose": "^2.2.0",
-    "react-redux": "^5.0.7",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
-    "redux": "^4.0.0"
-  },
+  "name": "diverso_server",
+  "version": "1.0.0",
+  "description": "diverso server REST API - Hao Wu",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo Test your code by opening http://localhost:3001 in your browser.",
+    "jshint": "./node_modules/.bin/jshint --config .jshintrc --exclude=node_modules,test . || exit 0",
+    "start": "node src/server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "proxy": "http://localhost:3001"
+  "author": "Hao Wu: wuhao20@stanford.edu, wuhao20utoronto@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.5.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "jshint": "^2.9.4",
+    "mongoose": "5.2.5"
+  }
 }

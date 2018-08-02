@@ -123,6 +123,7 @@ class LogIn extends Component {
               className="loginInput"
               required
               name="password"
+              type="password"
               value={ this.state.password }
               onChange={ this.handleInputChange } />
             <span className="highlight"></span>
@@ -137,6 +138,7 @@ class LogIn extends Component {
                   className="loginInput"
                   required
                   name="passwordRepeat"
+                  type="password"
                   value={ this.state.passwordRepeat }
                   onChange={ this.handleInputChange } />
                 <span className="highlight"></span>

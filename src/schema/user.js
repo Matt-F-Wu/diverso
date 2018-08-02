@@ -9,7 +9,7 @@ var { messageSchema } = require('./message.js');
 
 var bookmarkSchema = new mongoose.Schema({
   folder: { type: String, default: 'general' },
-  name: { type: String, default: 'untitled' },
+  name: { type: String, default: 'untitled', required: true },
   message: messageSchema,
 });
 

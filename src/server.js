@@ -11,6 +11,7 @@ var cors = require('cors');
 var { Message } = require('./schema/message.js');
 var fs = require("fs");
 var express = require('express');
+var path = require('path');
 var app = express();
 //SHA1 Hash password with salt
 var hashService = require('./encryption.js');
@@ -33,7 +34,7 @@ app.use(cors({
 
 // We have the express static module (http://expressjs.com/en/starter/static-files.html) do all
 // the work for us.
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 //Add new middleware, the secret here should never be exposed to anyone!
 app.use(session({secret: 'diverso_hao_matthew_wu', resave: true, saveUninitialized: true}));
@@ -196,6 +197,15 @@ app.get('/user/:id', function (request, response) {
 });
 
 // ======> Message related REST calls <======
+/* List all messages in the database */
+app.get('/message/list', function (request, response) {
+    var messageQuery = Message.find({});
+    messageQuery.exec(function(err, messages){
+        if (err) {return errorLog(err);}
+        response.status(200).send(messages);
+    });
+
+});
 
 /* Retrieveing a message */
 app.get('/message/:key', function(request, response){
@@ -335,17 +345,8 @@ app.post('/message', function(request, response){
     });
 });
 
-/* List all messages in the database */
-app.get('/message/list', function (request, response) {
-    var messageQuery = Message.find({});
-    messageQuery.exec(function(err, messages){
-        if (err) {return errorLog(err);}
-        response.status(200).send(messages);
-    });
-
-});
-
-var server = app.listen(3001, function () {
+const port = process.env.PORT || 3001;
+var server = app.listen(port, function () {
     var port = server.address().port;
     console.log('Listening at http://localhost:' + port + ' exporting the directory ' + __dirname);
 });

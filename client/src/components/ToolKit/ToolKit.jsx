@@ -20,13 +20,14 @@ class ToolKit extends Component {
 
   static getDerivedStateFromProps(props, state) {
     const { bookmarks } = props.user.userData;
+    
     const folders = {};
     if(bookmarks){
       bookmarks.forEach((bm) => {
         if (folders[bm.folder] !== undefined) {
-          folders[bm.folder] = [...folders[bm.folder], bm.message];
+          folders[bm.folder] = [...folders[bm.folder], {...bm.message, name: bm.name}];
         } else {
-          folders[bm.folder] = [bm.message];
+          folders[bm.folder] = [{...bm.message, name: bm.name}];
         }
       });
     }

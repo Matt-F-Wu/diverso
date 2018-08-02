@@ -283,14 +283,14 @@ class Conversation extends Component {
               alignItems: 'flex-end' } }
             >
               <p style={ { color: '#757575', fontWeight: 'bold' } }>
-                Save <input ref={ (el) => { this.nBMname = el; } } />
+                Save <input ref={ (el) => { this.nBMname = el; } } style={ { marginLeft: 4 } } placeholder="untitled"/>
               </p>
               <p style={ { color: '#757575', fontWeight: 'bold' } }>
-                In <input ref={ (el) => { this.nFolder = el; } } hint="new folder"/>
+                In <input ref={ (el) => { this.nFolder = el; } } style={ { marginLeft: 4 } } placeholder="new folder"/>
               </p>
             </div>
             <Button type='buttonGreen' label="Done" onClick={ this.submitBookmarks() }/>
-            <p className="pinkText">Or In</p>
+            <div className="pinkText" style={ { marginTop: 8 } }>Or In</div>
             {
               user.userData.bookmarks &&
               this.renderFolders()

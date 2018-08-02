@@ -4,6 +4,7 @@
   display: inline-block;
   overflow: hidden;
   z-index: 5;
+  margin: 8px;
 }
 
 .textContainer {
@@ -16,6 +17,7 @@
   background-color: var(--color-pink);
   color: white;
   border: 6px solid white;
+  cursor: pointer;
 }
 
 .bmfExpanded {
@@ -41,6 +43,18 @@
 
 .bmfExpanded>.bmCard {
   border: 0px !important;
+}
+
+.bmByNameContainer {
+  margin-left: 24px;
+  border-left: 2px solid var(--color-dark);
+  border-bottom: 2px solid var(--color-dark);
+}
+
+.bmName {
+  text-align: left;
+  padding-left: 32px;
+  padding-top: 16px;
 }
 
 @keyframes GrowFlex {

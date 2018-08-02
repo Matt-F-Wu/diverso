@@ -4,6 +4,7 @@ import Button from '../Button';
 import bird_circle from '../../media/bird_circle.svg';
 import raise_hand from '../../media/raise_hand.svg';
 import BMIcon from '../PureComponents/bookmark';
+import PropTypes from 'prop-types';
 
 class ChatBubble extends Component {
   state={
@@ -123,7 +124,7 @@ class ChatBubble extends Component {
             { message.extra }
           </div>
           {
-            this.state.showMenu &&
+            this.state.showMenu && this.props.hoverable &&
             <div className="floatingMenu">
                 <BMIcon onClick={ this.onClickBookmark } marked={ this.state.bookMarked }/>
                 <div
@@ -150,6 +151,14 @@ class ChatBubble extends Component {
     </div>
     );
 	}
+}
+
+ChatBubble.propTypes = {
+  hoverable: PropTypes.bool,
+};
+
+ChatBubble.defaultProps = {
+  hoverable: true,
 }
 
 export default ChatBubble;

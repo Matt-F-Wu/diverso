@@ -67,8 +67,8 @@ export function fetchUser(id) {
 
 function extractMessage(message){
   /*not extracting selection and actions*/
-  const { key, speaker, body } = message;
-  return { key, speaker, body };
+  const { key, speaker, body, actions, selection } = message;
+  return { key, speaker, body, actions, selection };
 }
 
 export function addUserBookmarks(username, bookmarks, name) {

@@ -112,6 +112,11 @@ export default class MessageForm extends Component {
         parentKey,
         parentAction,
         relink,
+      }).then((resp) => {
+        this.setState({editPaneVisible: false});
+        alert('Message added successfully!');
+      }).catch(() => {
+        alert('Something went wrong, text Hao');
       });
     } else {
       addUpdateMessage({
@@ -121,6 +126,11 @@ export default class MessageForm extends Component {
         messageKey,
         messageBody,
         messageActions,
+      }).then((resp) => {
+        this.setState({editPaneVisible: false});
+        alert('Message added successfully!');
+      }).catch(() => {
+        alert('Something went wrong, text Hao');
       });
     }
   }
