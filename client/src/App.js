@@ -8,7 +8,7 @@ import About from './components/About';
 import AppBar from './components/AppBar';
 import { Route } from 'react-router-dom';
 import MessageForm from './components/MessageForm';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 
 class App extends Component {
   render() {
