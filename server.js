@@ -1,9 +1,5 @@
 "use strict";
 
-const DEPLOY_MODE = 'DEPLOY_MODE';
-const DEV_MODE = 'DEV_MODE';
-var server_mode = process.env.HEROKU ? DEPLOY_MODE : DEV_MODE;
-
 var mongoose = require('mongoose');
 var async = require('async');
 var session = require('express-session');
@@ -20,7 +16,7 @@ var app = express();
 //SHA1 Hash password with salt
 var hashService = require('./encryption.js');
 
-var mongoURL = server_mode === DEPLOY_MODE ? 'mongodb://heroku_06h81ms8:asd123OK@ds163781.mlab.com:63781/heroku_06h81ms8' : 'mongodb://localhost/diverso';
+var mongoURL = process.env.HEROKU ? 'mongodb://heroku_06h81ms8:asd123OK@ds163781.mlab.com:63781/heroku_06h81ms8' : 'mongodb://localhost/diverso';
 console.log(mongoURL);
 mongoose.connect(mongoURL);
 
