@@ -21,7 +21,7 @@ import {
 import done_icon from '../../media/done.svg';
 import './Conversation.css';
 
-import TestView from './TestView';
+import TestView from '../TestView';
 const testMsg = {
   key: 'test',
   speaker: 'program',
