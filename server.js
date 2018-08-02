@@ -51,7 +51,7 @@ app.use(function(request, response, next){
     console.log(request.session);
     if(!request.session.username){
         //if the user wants to login or simply wants to chat
-        if(request.originalUrl === '/user/login' || request.originalUrl === '/user/register' || request.originalUrl.startsWith('/message') || request.originalUrl === '/'){
+        if(request.originalUrl === '/user/login' || request.originalUrl === '/user/register' || request.originalUrl.startsWith('/message') || request.originalUrl === '/' || request.originalUrl.startsWith('/client')){
             next();
         }else if(request.originalUrl === '/user/logout'){
             //bad request, status 400
