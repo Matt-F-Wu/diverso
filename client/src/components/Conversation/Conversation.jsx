@@ -21,6 +21,19 @@ import {
 import done_icon from '../../media/done.svg';
 import './Conversation.css';
 
+import TestView from './TestView';
+const testMsg = {
+  key: 'test',
+  speaker: 'program',
+  actions: [],
+  body: [
+    {
+      type: 'text',
+      value: <TextView />,
+    },
+  ],
+}
+
 const TYPE_MESSAGE = 'message';
 const TYPE_MESSAGE_INPUT = 'message_input';
 
