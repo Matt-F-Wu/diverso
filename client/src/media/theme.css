@@ -28,7 +28,7 @@
   padding: 8px;
 }
 
-.paddingMedia {
+.paddingMedium {
   padding: 16px;
 }
 
@@ -84,6 +84,42 @@
 .pinkText {
   color: var(--color-pink);
   font-weight: bold;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.generalJSXBubble {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.relativePosition {
+  position: relative;
+}
+
+.absoluteStart {
+  position: absolute;
+  top: 0px;
+  left: -71px;
+  height: calc(100% + 16px);
+  min-height: 100%;
+  width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 10px solid #32C7BE;
+  z-index: -1;
+}
+
+.absoluteStart svg {
+  position: absolute;
+  left: -30px;
+}
+
+.rounded {
+  border-radius: 6px;
 }
 
 @keyframes AppearFlex {

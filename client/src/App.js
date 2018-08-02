@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import './media/theme.css';
 import Conversation from './components/Conversation';
 import ToolKit from './components/ToolKit';
 import TheoryMap from './components/TheoryMap';

@@ -159,6 +159,7 @@ ChatBubble.propTypes = {
 
 ChatBubble.defaultProps = {
   hoverable: true,
+  bookMarks: [],
 }
 
 export default ChatBubble;

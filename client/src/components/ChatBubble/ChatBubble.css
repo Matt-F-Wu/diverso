@@ -47,9 +47,10 @@
 }
 
 .avatarContainer {
-  width: 10%;
+  /*width: 10%;*/
+  width: 100px;
   max-width: 100px;
-  margin-right: 2%;
+  margin-right: 16px;
 }
 
 .jsx_container {

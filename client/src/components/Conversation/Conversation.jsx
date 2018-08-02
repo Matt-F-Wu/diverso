@@ -29,7 +29,7 @@ const testMsg = {
   body: [
     {
       type: 'text',
-      value: <TextView />,
+      value: <TestView />,
     },
   ],
 }
@@ -63,7 +63,7 @@ class Conversation extends Component {
             onClick={ () => this.onActionClick(
               {
                 name: 'I want goal specific advice',
-                messageKey: initialState.conversation.history[0].key,
+                messageKey: 'goals_list',
               }, this.messageSwitch) }
           />
           <Button
@@ -139,7 +139,7 @@ class Conversation extends Component {
       addToConversation([resp.data]);
     }).catch((err) => {
       console.log('Error ===>', err);
-      this.openDialog('Cannot respond', err.response.data);
+      this.openDialog('Cannot respond', err.response && err.response.data);
       toogleIsFetching(false);
     });
   }
@@ -272,7 +272,6 @@ class Conversation extends Component {
             />
           )
         }
-        <div></div>
       </div>
       { this.state.bookMarks.length > 0 &&
         <img src={ done_icon } width="100" height="100" className="floatingButton"
