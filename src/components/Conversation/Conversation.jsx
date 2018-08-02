@@ -183,14 +183,15 @@ class Conversation extends Component {
     });
   }
 
-  submitBookmarks = (folder) => {
+  submitBookmarks = (fd) => {
     // empty bookmarks too
     return () => {
+      const folder = fd || this.nFolder.value;
       const { bookMarks } = this.state;
       const { user, conversation, updateBookmarks } = this.props;
       const bms = conversation.history.filter((m, i) => bookMarks.includes(i));
-      bms.forEach((bm) => {bm.folder = folder});
-      addUserBookmarks(user.userData.username, bms, folder)
+      bms.forEach((bm) => {bm.folder = folder;});
+      addUserBookmarks(user.userData.username, bms, this.nBMname.value)
       .then((resp) => {
         // TODO: success
         console.log(resp);
@@ -276,7 +277,20 @@ class Conversation extends Component {
         this.state.bookMarks.length > 0 && this.state.showFolderList &&
         <div className="floatingMenuBM">
           <div className="floatingMenuBMContent">
-            <span style={ { color: '#757575', fontWeight: 'bold' } }>Save In:</span>
+            <div style={ { 
+              display: 'flex',
+              flexDirection: 'column', 
+              alignItems: 'flex-end' } }
+            >
+              <p style={ { color: '#757575', fontWeight: 'bold' } }>
+                Save <input ref={ (el) => { this.nBMname = el; } } />
+              </p>
+              <p style={ { color: '#757575', fontWeight: 'bold' } }>
+                In <input ref={ (el) => { this.nFolder = el; } } hint="new folder"/>
+              </p>
+            </div>
+            <Button type='buttonGreen' label="Done" onClick={ this.submitBookmarks() }/>
+            <p className="pinkText">Or In</p>
             {
               user.userData.bookmarks &&
               this.renderFolders()

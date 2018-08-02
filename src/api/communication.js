@@ -66,13 +66,14 @@ export function fetchUser(id) {
 }
 
 function extractMessage(message){
-  const { key, speaker, actions, body } = message;
-  return { key, speaker, actions, body };
+  /*not extracting selection and actions*/
+  const { key, speaker, body } = message;
+  return { key, speaker, body };
 }
 
-export function addUserBookmarks(username, bookmarks, folder) {
+export function addUserBookmarks(username, bookmarks, name) {
   const requestUrl = `/user/${ username }/addbookmarks`;
   return instance.post(requestUrl, {bookmarks: 
-    bookmarks.map((bm) => {return { folder, message: extractMessage(bm)};} ),
+    bookmarks.map((bm) => {return { name, folder: bm.folder, message: extractMessage(bm)};} ),
   });
 }

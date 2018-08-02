@@ -33,7 +33,7 @@
 .floatingMenuBM {
   position: fixed;
   cursor: pointer;
-  max-height: 200px;
+  max-height: 400px;
   bottom: 40px;
   right: 40px;
   padding: 16px;
@@ -45,11 +45,11 @@
   /*box-shadow: 2px 6px 12px #999;*/
   animation: TurnSquare 0.3s ease-in-out;
   z-index: 100;
+  overflow: scroll;
 }
 
 .floatingMenuBMContent {
-  animation: ShowUp 0.2s ease-in-out;
-  animation-delay: 0.3s;
+  animation: AppearFlex 0.3s ease-in-out;
 }
 
 .list {
