@@ -1,8 +1,10 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
+const base = process.env.HEROKU ? '' : 'http://localhost:3001';
+
 const instance = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: base,
   timeout: 60000,
   headers: {
 	  'Content-Type': 'application/json',
