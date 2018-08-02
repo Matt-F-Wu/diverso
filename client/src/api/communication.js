@@ -1,7 +1,9 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-const base = process.env.HEROKU ? '' : 'http://localhost:3001';
+const DEPLOY = true;
+
+const base = DEPLOY ? '' : 'http://localhost:3001';
 
 const instance = axios.create({
   baseURL: base,
