@@ -1,7 +1,14 @@
 @import "../../media/theme.css";
 
+@media only screen and (max-width: 600px) {
+  .conversationContainer {
+    padding: 8px 15% 8px 15%;
+  }
+}
+
 .conversationContainer {
-  padding: 8px 15% 8px 15%;
+  padding: 8px 16px 8px 16px;
+  flex-wrap: wrap;
 }
 
 .floatingButton {
@@ -22,8 +29,11 @@
 
 .switchButton {
   width: calc(33% - 60px);
+  min-width: 100px;
+  height: 100px;
   margin-left: 12px;
   margin-right: 12px;
+  margin-bottom: 12px;
   border: 2px solid var(--color-program);
   background-color: white;
   text-align: center;

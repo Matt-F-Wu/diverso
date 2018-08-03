@@ -89,9 +89,8 @@
 }
 
 .choiceButtonWithMargin {
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   width: calc(50% - 56px);
-  max-width: calc(50% - 56px);
   margin: 8px;
 }
 

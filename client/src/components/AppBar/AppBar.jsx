@@ -13,6 +13,7 @@ import {
   setUser,
 } from '../LogIn/actions';
 import Dialog from '../Dialog';
+import { logoutUser } from '../../api/communication';
 /* States needed:
 user: Object *undefined meaning user is not logged in*
 */
@@ -84,6 +85,13 @@ class AppBar extends Component {
     });
   }
 
+  logout = () => {
+    this.props.userLogOut();
+    sessionStorage.removeItem('diverso_session_user');
+    // TODO? Make api call to log out from server
+    logoutUser();
+  }
+
 	render(){
     const { userData } = this.props.user;
     
@@ -115,12 +123,23 @@ class AppBar extends Component {
               to="/about"
               className="marginHMedium"
             />
-            <Button
-              onClick={ () => { this.setState({modalOpen: true}); } }
-              label={ 'Sign In' }
-              type={ 'buttonGreen' }
-              style={ { marginLeft: 16 } }
-            />
+            { !userData.username &&
+              <Button
+                onClick={ () => { this.setState({modalOpen: true}); } }
+                label={ 'Sign In' }
+                type={ 'buttonGreen' }
+                style={ { marginLeft: 16 } }
+              />
+            }
+            {
+              userData.username &&
+              <Button
+                onClick={ this.logout }
+                label={ 'Log Out' }
+                type={ 'buttonRed' }
+                style={ { marginLeft: 16 } }
+              />
+            }
           </div>
           { this.state.modalOpen &&
             <LogIn
@@ -143,6 +162,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     userLoggedIn: (user) => {
       dispatch(setUser(user));
+    },
+    userLogOut: () => {
+      dispatch(setUser({}));
     },
   }
 };
