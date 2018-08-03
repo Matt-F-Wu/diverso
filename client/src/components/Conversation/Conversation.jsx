@@ -72,7 +72,7 @@ class Conversation extends Component {
             onClick={ () => this.onActionClick(
               {
                 name: 'I want goal specific advice',
-                messageKey: initialState.conversation.history[0].key,
+                messageKey: 'big_idea_follow_up',
               }, this.messageSwitch) }
           />
           <Link to={'/map'}>

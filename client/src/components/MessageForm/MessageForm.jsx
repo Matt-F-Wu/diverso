@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './MessageForm.css';
-import { fetchNextMessage, addUpdateMessage } from '../../api/communication';
+import { fetchNextMessage, addUpdateMessage, searchMessage } from '../../api/communication';
 
 // Assuming that there can be multiple parents of a message
 // But for easy manipulation, only allow them to select one, they can easily add later on
@@ -9,33 +9,24 @@ export default class MessageForm extends Component {
     parentKey: '',
     parentAction: '',
     parentStatusMessage: '',
-    editPaneVisible: false,
     actionExist: false,
     relink: false,
-    messageKey: '',
-    messageBody: [],
-    messageActions: [],
+    key: '',
+    searchQ: '',
+    body: [],
+    actions: [],
   };
 
   parentTriggeredReset = () => {
     this.setState({
-      editPaneVisible: false,
       actionExist: false,
       relink: false,
       parentStatusMessage: '',
-      messageKey: '',
-      messageBody: [],
-      messageActions: [],
+      key: '',
+      searchQ: '',
+      body: [],
+      actions: [],
     });
-  }
-
-  handleParentInputChange = (event) => {
-    this.handleInputChange(event);
-    /*If the parent is changed, must do a parent query
-    before entering the new/updated message*/
-    if (this.state.parentStatusMessage || this.state.editPaneVisible) {
-      this.parentTriggeredReset(); 
-    }
   }
 
   handleInputChange = (event) => {
@@ -48,21 +39,21 @@ export default class MessageForm extends Component {
     });
   }
 
-  handleMessageBodyChange = (index) => {
+  handleBodyChange = (index) => {
     return (event) => {
       const target = event.target;
       const value = target.value;
       const name = target.name;
 
-      if (index >= this.state.messageBody.length) {
+      if (index >= this.state.body.length) {
         /* This is a new action, push one to the array */
-        this.state.messageBody.push({type: '', value: ''});
+        this.state.body.push({type: '', value: ''});
       }
 
-      if (name === 'messageBodyType') {
-        this.state.messageBody[index].type = value;  
-      } else if (name === 'messageBodyValue') {
-        this.state.messageBody[index].value = value;
+      if (name === 'bodyType') {
+        this.state.body[index].type = value;  
+      } else if (name === 'bodyValue') {
+        this.state.body[index].value = value;
       } else {
         /* TODO: more field possible ? */
       }
@@ -71,23 +62,23 @@ export default class MessageForm extends Component {
     }
   }
 
-  handleMessageActionsChange = (index) => {
+  handleActionsChange = (index) => {
     return (event) => {
       const target = event.target;
       const value = target.value;
       const name = target.name;
 
-      if (index >= this.state.messageActions.length) {
+      if (index >= this.state.actions.length) {
         /* This is a new action, push one to the array */
-        this.state.messageActions.push({});
+        this.state.actions.push({});
       }
 
-      if (name === 'actionsMessageKey') {
-        this.state.messageActions[index].messageKey = value;  
+      if (name === 'actionskey') {
+        this.state.actions[index].key = value;  
       } else if (name === 'actionsName') {
-        this.state.messageActions[index].name = value;
+        this.state.actions[index].name = value;
       } else if (name === 'actionsType') {
-        this.state.messageActions[index].type = value;
+        this.state.actions[index].type = value;
       } else {
         /* TODO: more field possible ? */
       }
@@ -102,10 +93,10 @@ export default class MessageForm extends Component {
       parentKey,
       parentAction,
       relink,
-      messageKey,
+      key,
       messageType,
-      messageBody,
-      messageActions } = this.state;
+      body,
+      actions } = this.state;
 
     if (this.state.relink) {
       addUpdateMessage({
@@ -113,7 +104,7 @@ export default class MessageForm extends Component {
         parentAction,
         relink,
       }).then((resp) => {
-        this.setState({editPaneVisible: false});
+        this.parentTriggeredReset();
         alert('Message added successfully!');
       }).catch(() => {
         alert('Something went wrong, text Hao');
@@ -123,11 +114,11 @@ export default class MessageForm extends Component {
         parentKey,
         parentAction,
         relink,
-        messageKey,
-        messageBody,
-        messageActions,
+        key,
+        body,
+        actions,
       }).then((resp) => {
-        this.setState({editPaneVisible: false});
+        this.parentTriggeredReset();
         alert('Message added successfully!');
       }).catch(() => {
         alert('Something went wrong, text Hao');
@@ -135,56 +126,47 @@ export default class MessageForm extends Component {
     }
   }
 
-  handleFindParent = (event) => {
+  handleQuery = (event) => {
     event.preventDefault();
     /* Find the message following the specified action if there is any */
-    const { parentKey, parentAction } = this.state;
-    fetchNextMessage(parentKey, parentAction)
-      .then((resp) => {
-          console.log(resp);
-          this.setState({
-            parentStatusMessage: 'Action already exist! Allowing Update',
-            messageKey: resp.data.key,
-            messageBody: resp.data.body,
-            messageActions: resp.data.actions,
-            editPaneVisible: true,
-            actionExist: true,
-          });
+    const { searchQ } = this.state;
+    searchMessage(searchQ).then((resp) => {
+      console.log(resp);
+      this.setState(resp.data);
+    }).catch((err) => {
+      console.log(err);
+      alert('Message not found!');
+      this.setState({
+        parentStatusMessage: 'Message not found!',
       })
-      .catch((reason) => {
-        const { response } = reason;
-        console.log(response);
-        if (response.status === 400) {
-          this.setState({
-            parentStatusMessage: 'Parent does not exist!'
-          });
-        } else if (response.status === 404) {
-          this.setState({
-            parentStatusMessage: `Creating new action for parent with key ${ parentKey }`,
-            editPaneVisible: true,
-            actionExist: false,
-          });
-        } else {
-          this.setState({
-            parentStatusMessage: 'Sorry, server error, please try again later!'
-          });
-        }
-      });
+    });
   }
 
   render() {
     return (
       <div className="MessageFormContainer">
-        <h3>Create or Update a Message</h3>
         <div className="formSection">
-          <p>What is the parent of this Message?</p>
-          <form onSubmit={ this.handleFindParent }>
+          <p>Search for a message</p>
+          <form onSubmit={ this.handleQuery }>
+            <label>
+              <input
+                name="searchQ" 
+                value={ this.state.searchQ }
+                onChange={ this.handleInputChange } />
+            </label>
+            <input type="submit" value="Find" className="base buttonGreen"/>
+          </form>
+        </div>
+        <h3>Create or Update a Message</h3>
+        <p className="statusMessage">{ this.state.parentStatusMessage }</p>
+        <div className="formSection">
+          <form onSubmit={ this.handleSubmitMessage }>
             <label>
               Parent message's key
               <input
                 name="parentKey" 
                 value={ this.state.parentKey }
-                onChange={ this.handleParentInputChange } />
+                onChange={ this.handleInputChange } />
             </label>
             <label>
               Parent message's action name
@@ -193,95 +175,87 @@ export default class MessageForm extends Component {
                 value={ this.state.parentAction }
                 onChange={ this.handleInputChange } />
             </label>
-            <input type="submit" value="Find" className="base buttonGreen"/>
-          </form>
-        </div>
-        <p className="statusMessage">{ this.state.parentStatusMessage }</p>
-        <div className="formSection">
-          { this.state.editPaneVisible && (
-            <form onSubmit={ this.handleSubmitMessage }>
-              <label>
-                <span className="formTitle">Message Key ( Alphanumeric and _ )</span>
-                <input
-                  required
-                  pattern="[a-zA-Z0-9_]+"
-                  name="messageKey" 
-                  value={ this.state.messageKey }
-                  onChange={ this.handleInputChange } />
-              </label>
+            <label>
+              <span className="formTitle">Message Key ( Alphanumeric and _ )</span>
+              <input
+                required
+                pattern="[a-zA-Z0-9_]+"
+                name="key" 
+                value={ this.state.key }
+                onChange={ this.handleInputChange } />
+            </label>
 
+            <label>
+              <span>
+              I am just linking to another existing Message
+              <input
+                style={ { marginLeft: 8 } }
+                name="relink"
+                type="checkbox"
+                checked={this.state.relink}
+                onChange={this.handleInputChange} />
+              </span>
+            </label>
+            { !this.state.relink && (
+              <div>
+              <span className="formTitle">Message Body</span>
+              {
+                [...this.state.body,
+                  {type: '', value: ''}].map((mb, i) =>
+                    <div key={ i } className="actionBubble">
+                      <label>
+                        <span>Segment Type ( text, JSX )</span>
+                        <input
+                          pattern="[a-zA-Z0-9_]+"
+                          name="bodyType" 
+                          value={ mb.type }
+                          onChange={ this.handleBodyChange(i) } />
+                      </label>
+                      <label>
+                        <span>Segment content</span>
+                        <textarea
+                          name="bodyValue"
+                          value={ mb.value }
+                          onChange={ this.handleBodyChange(i) } />
+                      </label>
+                  </div>
+                  )
+              }
               <label>
-                <span>
-                I am just linking to another existing Message
-                <input
-                  style={ { marginLeft: 8 } }
-                  name="relink"
-                  type="checkbox"
-                  checked={this.state.relink}
-                  onChange={this.handleInputChange} />
-                </span>
-              </label>
-              { !this.state.relink && (
-                <div>
-                <span className="formTitle">Message Body</span>
+                <span className="formTitle">Message Actions</span>
                 {
-                  [...this.state.messageBody,
-                    {type: '', value: ''}].map((mb, i) =>
-                      <div key={ i } className="actionBubble">
-                        <label>
-                          <span>Segment Type ( text, JSX )</span>
-                          <input
-                            pattern="[a-zA-Z0-9_]+"
-                            name="messageBodyType" 
-                            value={ mb.type }
-                            onChange={ this.handleMessageBodyChange(i) } />
-                        </label>
-                        <label>
-                          <span>Segment content</span>
-                          <textarea
-                            name="messageBodyValue"
-                            value={ mb.value }
-                            onChange={ this.handleMessageBodyChange(i) } />
-                        </label>
+                  [...this.state.actions,
+                    {name: '', key: ''}].map((ma, i) =>
+                    <div key={ i } className="actionBubble">
+                      <label>
+                        Action Name
+                        <input
+                          name="actionsName"
+                          value={ ma.name }
+                          onChange={ this.handleActionsChange(i) } />
+                      </label>
+                      <label>
+                        Action Type
+                        <input
+                          name="actionsType"
+                          value={ ma.type }
+                          onChange={ this.handleActionsChange(i) } />
+                      </label>
+                      <label>
+                        Which Message Does This Action Lead to? Enter the Message Key
+                        <input
+                          name="actionskey"
+                          value={ ma.key }
+                          onChange={ this.handleActionsChange(i) } />
+                      </label>
                     </div>
-                    )
+                  )
                 }
-                <label>
-                  <span className="formTitle">Message Actions</span>
-                  {
-                    [...this.state.messageActions,
-                      {name: '', messageKey: ''}].map((ma, i) =>
-                      <div key={ i } className="actionBubble">
-                        <label>
-                          Action Name
-                          <input
-                            name="actionsName"
-                            value={ ma.name }
-                            onChange={ this.handleMessageActionsChange(i) } />
-                        </label>
-                        <label>
-                          Action Type
-                          <input
-                            name="actionsType"
-                            value={ ma.type }
-                            onChange={ this.handleMessageActionsChange(i) } />
-                        </label>
-                        <label>
-                          Which Message Does This Action Lead to? Enter the Message Key
-                          <input
-                            name="actionsMessageKey"
-                            value={ ma.messageKey }
-                            onChange={ this.handleMessageActionsChange(i) } />
-                        </label>
-                      </div>
-                    )
-                  }
-                </label>
-                </div>
-              )}
-              <input type="submit" value="Submit" className="base buttonGreen"/>
-            </form>
-          )}
+              </label>
+              </div>
+            )}
+            <input type="submit" value="Submit" className="base buttonGreen"/>
+          </form>
         </div>
       </div>
     );

@@ -217,6 +217,10 @@ const convoStarter = [
       key: 'challenge_decribe', speaker: 'program', actions: [{name: '“My students aren’t very close. They seem to sit in clusters by race and ethnicity and I get the sense that some groups harbor biases against others. I wish I could help them feel a greater connection and appreciation for one another.”', messageKey: 'symbolism_1'}, {name: '“Some of my students make fun of one another (call each other names, call each other dumb when they get things wrong, etc) and I’m having trouble getting them to be more respectful.”', messageKey: ''}, {name: '“The other day one of my students called another one by a racial slur and I’m trying to plan my conversation with the student and the rest of the class about why that’s not ok.”', messageKey: ''}], body: [{type: 'text', value: 'AWESOME! Related to Building a culture of respect between your students, which of the following best describes your challenge?'}]
     },
 
+    {
+      key: 'big_idea_follow_up', speaker: 'program', actions: [{name: 'Sociopolitical context', messageKey: ''}, {name: 'Culture and learning', messageKey: ''}, {name: 'Identity', messageKey: ''}], body: [{type: 'text', value: 'GREAT! I’d love to help. Which of the following categories does the topic you want to talk about most closely relate to?'}]
+    },
+
     message1,
     message2,
 ];

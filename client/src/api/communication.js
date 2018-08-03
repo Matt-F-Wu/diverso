@@ -44,6 +44,11 @@ export function fetchMessage(key) {
   return instance.get(requestUrl);
 }
 
+export function searchMessage(q) {
+  const requestUrl = '/messages/search';
+  return instance.post(requestUrl, {q});
+}
+
 export function addUpdateMessage(update) {
   const requestUrl = `/message`;
   return instance.post(requestUrl, update);

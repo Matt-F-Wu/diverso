@@ -196,13 +196,39 @@ app.get('/user/:id', function (request, response) {
 
 // ======> Message related REST calls <======
 /* List all messages in the database */
-app.get('/message/list', function (request, response) {
+app.get('/messages/list', function (request, response) {
     var messageQuery = Message.find({});
     messageQuery.exec(function(err, messages){
         if (err) {return errorLog(err);}
         response.status(200).send(messages);
     });
 
+});
+
+/* Search message based on pieces of content in the body */
+app.post('/messages/search', function (request, response){
+    const { q } = request.body;
+    Message.findOne({"body.value": { "$regex": q, "$options": "i" } })
+    .exec(function(err, message){
+        if (!message) {
+            response.status(404).send('message not found');
+            return;
+        }
+        // message exist, find parent
+        Message.findOne({"actions.messageKey" : message.key})
+        .exec(function(error, parent){
+            const reply = JSON.parse(JSON.stringify(message));
+            if (parent) {
+                reply.parentKey = parent.key;
+                const actionFound = parent.actions.filter((a) => a.messageKey === message.key);
+                if (actionFound.length > 0) {
+                    reply.parentAction = actionFound[0].name;
+                }
+                
+            }
+            response.status(200).send(reply);
+        });
+    });
 });
 
 /* Retrieveing a message */
