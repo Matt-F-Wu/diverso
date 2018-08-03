@@ -105,7 +105,7 @@ export default class MessageForm extends Component {
         relink,
       }).then((resp) => {
         this.parentTriggeredReset();
-        alert('Message added successfully!');
+        alert('Message added successfully!', resp);
       }).catch(() => {
         alert('Something went wrong, text Hao');
       });
@@ -119,7 +119,7 @@ export default class MessageForm extends Component {
         actions,
       }).then((resp) => {
         this.parentTriggeredReset();
-        alert('Message added successfully!');
+        alert('Message added successfully!', resp);
       }).catch(() => {
         alert('Something went wrong, text Hao');
       });

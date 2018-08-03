@@ -296,12 +296,12 @@ app.post('/message', function(request, response){
         parentKey,
         parentAction,
         relink,
-        messageKey,
-        messageBody,
-        messageActions,
+        key,
+        body,
+        actions,
     } = request.body;
 
-    Message.findOne({key: messageKey})
+    Message.findOne({key})
     .exec(function(err, message){
         if(!!err){
             response
@@ -312,9 +312,9 @@ app.post('/message', function(request, response){
         if (!message) {
             /* message does not exist, insert*/
             Message.create({
-                key: messageKey,
-                actions: messageActions,
-                body: messageBody,
+                key,
+                actions,
+                body,
                 speaker: 'program',
             }).then((msg) => {
                 if (!parentKey) {
@@ -334,7 +334,7 @@ app.post('/message', function(request, response){
                         parent.actions.forEach((a, i) => {
                             if (a.name === parentAction) {
                                 foundAction = true;
-                                parent.actions[i].messageKey = messageKey;
+                                parent.actions[i].messageKey = key;
                                 /* This action type is just a message */
                                 parent.actions[i].type = 'message';
                             }
@@ -342,7 +342,7 @@ app.post('/message', function(request, response){
                         if (!foundAction) {
                             parent.actions.push({
                                 name: parentAction,
-                                messageKey: messageKey,
+                                messageKey: key,
                                 type: 'message',
                             });
                         }
@@ -361,8 +361,8 @@ app.post('/message', function(request, response){
             });
         } else {
             /* Message exist update */
-            message.actions = messageActions;
-            message.body = messageBody;
+            message.actions = actions;
+            message.body = body;
             message.save();
             response.status(200).send('message updated');
         }
