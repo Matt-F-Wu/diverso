@@ -1,8 +1,9 @@
 @import "../../media/theme.css";
 
 .conversationContainer {
-  min-width: 500px;
-  margin: 8px 15% 8px 15%;
+  max-width: 1200px;
+  width: calc(100% - 32px);
+  margin: 8px 16px 8px 16px;
   flex-wrap: wrap;
 }
 
