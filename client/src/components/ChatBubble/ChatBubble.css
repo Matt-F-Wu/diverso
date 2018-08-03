@@ -47,8 +47,7 @@
 }
 
 .avatarContainer {
-  /*width: 10%;*/
-  width: 100px;
+  width: 10%;
   max-width: 100px;
   margin-right: 16px;
 }
