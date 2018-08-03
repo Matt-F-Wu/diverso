@@ -204,7 +204,7 @@ export default class MessageForm extends Component {
                   {type: '', value: ''}].map((mb, i) =>
                     <div key={ i } className="actionBubble">
                       <label>
-                        <span>Segment Type ( text, JSX )</span>
+                        <span>Segment Type ( text, jsx )</span>
                         <input
                           pattern="[a-zA-Z0-9_]+"
                           name="bodyType" 
