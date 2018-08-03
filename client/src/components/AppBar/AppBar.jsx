@@ -96,7 +96,7 @@ class AppBar extends Component {
           <Link to="/dialog" style={ { height: '100%', marginTop: 10 } }>
             <img src={ logo } className={ 'logo' }/>
           </Link>
-          <div className="flexRow flexCenter" style={ {alignItems: 'center'} }>
+          <div className="flexRow flexCenter">
             { userData.username && 
               <Link to="/dialog" style={ { height: '100%' } } className="marginHMedium">
                 <Button

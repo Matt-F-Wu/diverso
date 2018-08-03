@@ -257,6 +257,7 @@ class Conversation extends Component {
     const { conversation, user } = this.props;
     return (
       <div>
+      <link href='https://fonts.googleapis.com/css?family=Margarine' rel='stylesheet' />
       <div
         className={ 'conversationContainer' }>
         {
@@ -272,6 +273,7 @@ class Conversation extends Component {
             />
           )
         }
+        {/*<TestView />*/}
       </div>
       { this.state.bookMarks.length > 0 &&
         <img src={ done_icon } width="100" height="100" className="floatingButton"
