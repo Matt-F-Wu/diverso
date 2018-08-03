@@ -1,7 +1,7 @@
 import axios from 'axios';
 axios.defaults.withCredentials = true;
 
-const DEPLOY = false;
+const DEPLOY = true;
 
 const base = DEPLOY ? '' : 'http://localhost:3001';
 
