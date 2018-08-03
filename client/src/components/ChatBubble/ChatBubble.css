@@ -44,6 +44,7 @@
   justify-content: flex-end;
   border-color: transparent;
   text-align: center;
+  max-width: 360px;
 }
 
 .avatarContainer {
