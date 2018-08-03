@@ -21,7 +21,7 @@ const list1 = [
       <div style="flex: 1; padding: 16px;">
         One of the ways you can start fostering connection and appreciation between students is to model the way you want them to honor one another by using honorary and inclusive symbolism in the class that represents your diverse student identities. 
       </div>
-      <div class="absoluteStart" style="left: -33px">
+      <div class="absoluteStart" style="left: -34px">
       <svg width="48" height="48" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="46" cy="46" r="46" fill="#32C7BE"/>
         <path d="M28.4505 9.32837C28.4505 13.6291 31.3135 17.203 35.1307 18.3539V25.9256H11.6904H6.6802V31.0138V38.5855C2.8033 39.6759 0 43.3103 0 47.611C0 52.7598 4.11548 57 9.24493 57C14.3147 57 18.4898 52.8204 18.4898 47.611C18.4898 43.3103 15.6269 39.7364 11.8096 38.5855V31.0138H35.3096H40.3198V25.9256V18.3539C44.1967 17.2635 47 13.6291 47 9.32837C46.9404 4.1796 42.7652 0 37.6954 0C32.6256 0 28.4505 4.1796 28.4505 9.32837ZM13.3604 47.611C13.3604 49.9734 11.5114 51.8512 9.18528 51.8512C6.85914 51.8512 5.01015 49.9734 5.01015 47.611C5.01015 45.2487 6.85914 43.3709 9.18528 43.3709C11.5114 43.3103 13.3604 45.2487 13.3604 47.611ZM41.8706 9.32837C41.8706 11.6908 40.0216 13.5685 37.6954 13.5685C35.3693 13.5685 33.5203 11.6908 33.5203 9.32837C33.5203 6.96599 35.3693 5.0882 37.6954 5.0882C40.0216 5.0882 41.8706 6.96599 41.8706 9.32837Z" transform="translate(75 22) rotate(90)" fill="white"/>
@@ -36,7 +36,7 @@ const list1 = [
         <p style="color: #941F56;">
           Symbols or artifacts decorating your classroom can be used to foster a sense of inclusive and appreciative community in your classroom. Every student’s identity and or culture can be represented in truthful and celebratory ways through symbolic artifacts. 
         </p>
-        <div class="absoluteStart" style="left: -33px">
+        <div class="absoluteStart" style="left: -34px">
         <svg width="48" height="48" viewBox="0 0 93 93" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M93 46.5C93 72.1812 72.1812 93 46.5 93C20.8188 93 0 72.1812 0 46.5C0 20.8188 20.8188 0 46.5 0C72.1812 0 93 20.8188 93 46.5Z" fill="#32C7BE"/>
         <path d="M3.05614 5.81048C4.74401 5.81048 6.11229 4.50976 6.11229 2.90524C6.11229 1.30072 4.74401 0 3.05614 0C1.36828 0 0 1.30072 0 2.90524C0 4.50976 1.36828 5.81048 3.05614 5.81048Z" transform="translate(44.0089 9.68945)" fill="white"/>
